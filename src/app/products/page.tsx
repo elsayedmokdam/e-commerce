@@ -1,5 +1,3 @@
-export default function page() {
-  return (
-    <div>Products</div>
-  )
+export default async function page() {
+  return <div>Products</div>;
 }

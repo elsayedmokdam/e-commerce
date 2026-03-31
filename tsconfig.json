@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/images/*": ["./src/assets/images/*"],
+      "@public/*": ["./public/*"],
     }
   },
   "include": [

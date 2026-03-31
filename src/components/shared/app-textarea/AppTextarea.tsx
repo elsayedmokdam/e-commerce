@@ -14,7 +14,7 @@ export default function AppTextarea({
 
       <textarea
         className={`w-full border border-gray-300 rounded-xl px-4 py-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-main-color ${className}`}
-        {...rest} // passing the rest of the props
+        {...rest} // pass the rest of the props
       />
     </Field>
   );

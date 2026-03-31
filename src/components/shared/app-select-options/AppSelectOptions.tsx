@@ -13,18 +13,25 @@ export function AppSelectOptions({
   placeholder,
   label,
   values,
-}: AppSelectOptionsProps) {
+  value,
+  onChange,
+}: AppSelectOptionsProps & {
+  value?: string;
+  onChange?: (value: string) => void;
+}) {
   return (
-    <Select>
-      <SelectTrigger className="w-full max-w-48 rounded-lg">
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="w-full rounded-lg">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
+
       <SelectContent>
         <SelectGroup>
           {label && <SelectLabel>{label}</SelectLabel>}
-          {values?.map((value) => (
-            <SelectItem key={value.value} value={value.value}>
-              {value.label}
+
+          {values?.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
             </SelectItem>
           ))}
         </SelectGroup>

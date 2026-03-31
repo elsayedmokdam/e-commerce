@@ -58,7 +58,7 @@ export interface AppFormProps {
   actionButtons?: ActionButton[];
 
   /** Validation schema */
-  schema?: ZodTypeAny | ((values: Record<string, any>) => Promise<Record<string, string>>);
+  schema?: ZodTypeAny ;
 
   /** Default form values */
   defaultValues?: Record<string, any>;

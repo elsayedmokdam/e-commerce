@@ -15,5 +15,7 @@ export const getCategoriesService = async (
   const query = params ? `?${new URLSearchParams(params).toString()}` : "";
   return http(`${BASE_URL}${ROUTE_URL}${query}`, {
     method: "GET",
+    cache: "no-cache",
+    next: { revalidate: 60 }, // Revalidate every 60 seconds (Next.js specific)
   });
 };

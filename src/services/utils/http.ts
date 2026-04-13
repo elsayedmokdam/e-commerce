@@ -154,8 +154,6 @@ export async function http<T = any>(
       headers,
       signal: controller.signal,
       credentials: mergedConfig.withCredentials ? "include" : "same-origin",
-      cache: "no-cache",
-      next: { revalidate: 60 }, // Revalidate every 60 seconds (Next.js specific)
     });
 
     clearTimeout(timeoutId);

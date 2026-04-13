@@ -50,6 +50,8 @@ export const nextAuthConfig: NextAuthOptions = {
     maxAge: 24 * 60 * 60, // 24 hours
   },
 
+  secret: process.env.NEXTAUTH_SECRET,
+
   callbacks: {
     // This function is called in each successful authentication and in each navigation.
     // You can use it to persist additional data in the token, such as the real token from your API.

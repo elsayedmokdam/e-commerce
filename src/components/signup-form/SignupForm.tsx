@@ -101,6 +101,7 @@ export default function SignupForm() {
        await SignupUser(data);
 
        notify.success("Signup successful!");
+       
      } catch (error: any) {
        notify.error(
          "Signup failed: an error occurred while signing up. Please check your credentials and try again.",

@@ -1,4 +1,3 @@
-
 import { notify } from "@/utilities/alerts";
 
 /**
@@ -141,12 +140,11 @@ async function parseResponse<T>(response: Response): Promise<T> {
 export async function http<T = any>(
   url: string,
   options: RequestInit = {},
-  config: HttpConfig = {}
+  config: HttpConfig = {},
 ): Promise<T> {
   const mergedConfig = { ...DEFAULT_CONFIG, ...config };
   const headers = createHeaders(options);
 
-  // Create AbortController for timeout handling
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), mergedConfig.timeout);
 
@@ -161,49 +159,26 @@ export async function http<T = any>(
 
     clearTimeout(timeoutId);
 
-    // Handle success message
-    if (mergedConfig.successMessage && response.ok) {
-      notify.success(mergedConfig.successMessage);
-    }
-
-    // Parse response data
     const data = await parseResponse<T>(response);
 
-    // Handle HTTP errors
     if (!response.ok) {
-      const errorMessage = getErrorMessage(response.status, data);
-
-      if (mergedConfig.showErrorToast) {
-        notify.error(errorMessage);
-      }
-
-      throw new HttpError(errorMessage, response.status, data);
+      const message = getErrorMessage(response.status, data);
+      throw new HttpError(message, response.status, data);
     }
 
     return data;
   } catch (error: any) {
     clearTimeout(timeoutId);
 
-    // Handle different types of errors
     if (error.name === "AbortError") {
-      const timeoutMessage = "Request timed out. Please try again.";
-      if (mergedConfig.showErrorToast) {
-        notify.error(timeoutMessage);
-      }
-      throw new HttpError(timeoutMessage, 408, null);
+      throw new HttpError("Request timed out", 408);
     }
 
     if (error instanceof HttpError) {
       throw error;
     }
 
-    // Network or other errors
-    const networkMessage = error.message || "Network error. Please check your connection.";
-    if (mergedConfig.showErrorToast) {
-      notify.error(networkMessage);
-    }
-
-    throw new HttpError(networkMessage, 0, null);
+    throw new HttpError(error.message || "Network error", 0);
   }
 }
 

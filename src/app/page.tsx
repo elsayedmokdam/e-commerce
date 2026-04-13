@@ -6,6 +6,8 @@ import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { ProductData } from "@/services/types/products_interface";
 import { CategoryData } from "@/services/types/categories_interface";
 
+// export const dynamic = 'force-dynamic';
+
 export default async function page() {
   // Fetch featured products for the homepage
   const productsResponse = await $SERVICE_REPOSITORY.Products.getProducts({

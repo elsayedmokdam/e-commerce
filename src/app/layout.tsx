@@ -5,7 +5,6 @@ import React from "react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { Toaster } from "react-hot-toast";
-import ReactQueryProvider from "@/context/react-query-provider/ReactQueryProvider";
 const exo = Exo({
   variable: "--font-exo",
   subsets: ["latin"],

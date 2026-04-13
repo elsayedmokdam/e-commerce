@@ -4,7 +4,7 @@ import icon from "@public/allProductsIcon.svg";
 import ProductsLoading from "./loading";
 import CategoriesList from "./CategoriesList";
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 export default function page() {
   return (

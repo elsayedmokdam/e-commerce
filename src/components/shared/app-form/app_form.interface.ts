@@ -1,6 +1,6 @@
 import React from "react";
 import { RegisterOptions, FieldValues, UseFormReturn } from "react-hook-form";
-import { ZodTypeAny } from "zod/v3";
+import { z } from "zod";
 
 export type FieldType = "input" | "textarea" | "select";
 
@@ -39,7 +39,7 @@ export interface ActionButton {
   className?: string;
 }
 
-export interface AppFormProps {
+export interface AppFormProps<T extends FieldValues = any> {
   /** Fields configuration */
   fields: FormField[];
 
@@ -47,7 +47,7 @@ export interface AppFormProps {
   components: Partial<Record<FieldType, React.ComponentType<any>>>;
 
   /** Submit handler */
-  onSubmit: (data: any) => Promise<void> | void;
+  onSubmit: (data: T) => Promise<void> | void;
 
   /** Optional error handler */
   onError?: (error: any) => void;
@@ -59,10 +59,10 @@ export interface AppFormProps {
   actionButtons?: ActionButton[];
 
   /** Validation schema */
-  schema?: ZodTypeAny ;
+  schema?: z.ZodSchema<any>;
 
   /** Default form values */
-  defaultValues?: Record<string, any>;
+  defaultValues?: Partial<T>;
 
   /** Layout */
   layoutClassName?: string;
@@ -75,10 +75,10 @@ export interface AppFormProps {
   shouldUnregister?: boolean;
 
   /** Watch changes */
-  onFormChange?: (values: Record<string, any>) => void;
+  onFormChange?: (values: T) => void;
 
   /** Expose form methods */
-  formRef?: React.Ref<UseFormReturn<FieldValues>>;
+  formRef?: React.Ref<UseFormReturn<T>>;
 
   /** Extra JSX */
   children?: React.ReactNode;

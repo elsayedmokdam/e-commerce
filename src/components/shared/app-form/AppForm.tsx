@@ -26,7 +26,7 @@ export default function AppForm({
   } = useForm({
     defaultValues,
     mode: "all",
-    resolver: schema ? zodResolver(schema) : undefined,
+    resolver: schema ? zodResolver(schema as any) : undefined,
   });
 
   // Filter visible fields only

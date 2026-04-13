@@ -1,6 +1,6 @@
 import React from "react";
 import { RegisterOptions, FieldValues, UseFormReturn } from "react-hook-form";
-import { ZodTypeAny } from "zod";
+import { ZodTypeAny } from "zod/v3";
 
 export type FieldType = "input" | "textarea" | "select";
 

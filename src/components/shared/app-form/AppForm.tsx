@@ -1,10 +1,9 @@
-"use client";
-
 import { useForm, Controller } from "react-hook-form";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AppFormProps } from "./app_form.interface";
 import { useMemo } from "react";
+import { ImSpinner } from "react-icons/im";
 
 export default function AppForm({
   fields,
@@ -12,10 +11,12 @@ export default function AppForm({
   onSubmit,
   schema,
   defaultValues,
+  buttonText = "Submit",
   submitButton = true,
   resetButton = false,
   formClassName = "space-y-4",
   layoutClassName = "",
+  children,
 }: AppFormProps) {
   const {
     control,
@@ -24,6 +25,7 @@ export default function AppForm({
     reset,
   } = useForm({
     defaultValues,
+    mode: "all",
     resolver: schema ? zodResolver(schema) : undefined,
   });
 
@@ -32,7 +34,6 @@ export default function AppForm({
     () => fields.filter((field) => !field.hidden),
     [fields],
   );
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={formClassName}>
@@ -70,16 +71,20 @@ export default function AppForm({
         })}
       </div>
 
+      {/* Custom children (checkboxes, alerts, etc.) */}
+      {children}
+
       {/* Buttons */}
       {(submitButton || resetButton) && (
-        <div className="flex gap-2 mt-6">
+        <div className="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-2">
           {submitButton && (
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-main-color text-white text-xl px-6 py-2 rounded-lg disabled:opacity-50 hover:bg-green-700 transition duration-200 ease-in-out w-full"
+              className={`bg-main-color text-white text-base font-semibold px-6 py-3 rounded-xl disabled:opacity-50 hover:bg-green-700 transition duration-200 ease-in-out w-full ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"} flex items-center justify-center gap-2`}
             >
-              Submit
+              <span>{buttonText}</span>
+              {isSubmitting && <ImSpinner className="animate-spin" />}
             </button>
           )}
 
@@ -87,7 +92,7 @@ export default function AppForm({
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full bg-gray-300 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-200 ease-in-out"
+              className="w-full bg-gray-200 px-6 py-3 rounded-xl hover:bg-gray-300 transition duration-200 ease-in-out cursor-pointer text-gray-800 font-semibold"
             >
               Reset
             </button>

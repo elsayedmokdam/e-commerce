@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import { Exo } from "next/font/google";
 import "./globals.css";
-import { AppSelectOptions } from "../components/shared/app-select-options/AppSelectOptions";
-import AppForm from "../components/shared/app-form/AppForm";
-import AppInput from "../components/shared/app-input/AppInput";
-import AppTextarea from "../components/shared/app-textarea/AppTextarea";
-import AppButton from "../components/shared/app-button/AppButton";
 import React from "react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { Toaster } from "react-hot-toast";
+import ReactQueryProvider from "@/context/react-query-provider/ReactQueryProvider";
 const exo = Exo({
   variable: "--font-exo",
   subsets: ["latin"],
@@ -31,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${exo.variable}`}>
       <body>
-        <Navbar />
-        {/* <AppButton className="text-white bg-green-500 rounded-sm">Submit</AppButton> */}
-        {/* <AppSelectOptions values={[{ label: "Ahmed", value: "Ali" }]} /> */}
+        <div className="mb-18">
+          <Navbar />
+        </div>
         {children}
         <Footer />
         <Toaster position="top-right" />

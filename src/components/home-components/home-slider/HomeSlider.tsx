@@ -1,8 +1,6 @@
 import slider1 from "@/images/slider-1.png";
-import slider2 from "@/images/slider-2.jpeg";
-import slider3 from "@/images/slider-3.jpeg";
 import Link from "next/link";
-import Slider from "../shared/slider/Slider";
+import Slider from "../../shared/slider/Slider";
 
 const slides = [
   {
@@ -14,7 +12,7 @@ const slides = [
     description: "Get 20% off your first order",
   },
   {
-    image: slider2.src,
+    image: slider1.src,
     title: "Quality Groceries",
     subtitle: "that make life easy",
     button1: "Browse Collection",
@@ -22,7 +20,7 @@ const slides = [
     description: "Free shipping on orders over $50",
   },
   {
-    image: slider3.src,
+    image: slider1.src,
     title: "Freshness You can Trust",
     subtitle: "Every day, every delivery",
     button1: "Explore Now",

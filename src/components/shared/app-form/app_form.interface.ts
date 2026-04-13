@@ -1,6 +1,6 @@
 import React from "react";
 import { RegisterOptions, FieldValues, UseFormReturn } from "react-hook-form";
-import { ZodTypeAny } from "zod/v3";
+import { ZodTypeAny } from "zod";
 
 export type FieldType = "input" | "textarea" | "select";
 
@@ -53,6 +53,7 @@ export interface AppFormProps {
   onError?: (error: any) => void;
 
   /** Buttons */
+  buttonText?: string;
   submitButton?: boolean | ButtonConfig;
   resetButton?: boolean | ButtonConfig;
   actionButtons?: ActionButton[];

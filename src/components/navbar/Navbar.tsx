@@ -24,16 +24,33 @@ import AppInput from "../shared/app-input/AppInput";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       {/* Top of Navbar */}
-      <div className="hidden md:flex items-center justify-between text-gray-500 font-medium text-sm px-30 py-4">
+      <div className="hidden lg:flex items-center justify-between text-gray-500 font-medium text-sm px-30 py-4 ">
         <div className="flex items-center gap-7 text-gray-500 font-medium text-sm">
           <div className="flex items-center gap-2">
             <div>
               <img src={vector6.src} alt="Vector" />
             </div>
-            <span>Free Shipping on all Orders Over 500 EGP</span>
+            <span>Free Shipping on Orders Over 500 EGP</span>
           </div>
           <div className="flex items-center gap-2">
             <div>
@@ -58,9 +75,7 @@ export function Navbar() {
         </div>
       </div>
 
-      <div className="h-px bg-gray-200"></div>
-
-      <nav className="hidden md:flex items-center justify-between px-30 py-4">
+      <nav className={`hidden lg:flex items-center justify-between px-30 py-4 transition-all duration-300 fixed w-full z-50 top-0 border-t border-gray-200 ${scrolled ? "bg-white shadow-md" : "top-12 bg-white"}`}>
         {/* Logo */}
         <div>
           <Link href="/">
@@ -193,6 +208,11 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
+
+        {/* Signup Button */}
+        <Link href="/signup" className="bg-main-color text-white px-4 py-2 rounded-full hover:bg-main-color/80">
+          Signup
+        </Link>
       </nav>
 
       {/* Overlay */}
@@ -204,7 +224,7 @@ export function Navbar() {
       )}
 
       {/* Side Menu */}
-      <div className="flex items-center justify-between text-gray-500 font-medium p-4 text-sm md:hidden">
+      <div className="flex items-center justify-between text-gray-500 font-medium p-4 text-sm lg:hidden fixed w-full z-50 top-0 bg-white ">
         {/* Logo */}
         <img src={logo.src} alt="logo" className="w-28" />
 
@@ -223,7 +243,7 @@ export function Navbar() {
           {/* Hamburger */}
           <button
             onClick={() => setOpen(true)}
-            className="text-xl md:hidden text-white bg-main-color p-2.5 rounded-full"
+            className="text-xl lg:hidden text-white bg-main-color p-2.5 rounded-full"
           >
             <FaBars />
           </button>
@@ -333,10 +353,6 @@ export function Navbar() {
       </div>
     </div>
   );
-}
-
-{
-  /* <div className="bg-main-color/7 size-9 rounded-full flex items-center justify-center">  <div className="after:content-[''] after:w-px after:h-full after:bg-gray-200 after:absolute after:inset-e-0 after:top-0"> <p className="text-gray-400 text-xs">Support</p> <p className="text-gray-700 text-xs">24/7 Help</p> </div> */
 }
 
 function ListItem({

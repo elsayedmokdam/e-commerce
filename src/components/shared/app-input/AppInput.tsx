@@ -12,20 +12,25 @@ export default function AppInput({
   label,
   icon,
   iconPosition = "start",
+  position,
+  endIcon,
   className = "",
   iconClassName = "",
+  endIconClassName = "",
   ...rest
 }: AppInputProps) {
+  const align = position ?? iconPosition;
+
   return (
     <Field>
       {label && <FieldLabel>{label}</FieldLabel>}
 
       <InputGroup
-        className={`bg-white w-full border border-gray-300 py-5 px-2 ${className}`}
+        className={`bg-white w-full border border-gray-300 py-6 px-2 ${className}`}
       >
-        {icon && (
+        {icon && align === "start" && (
           <InputGroupAddon
-            align={`inline-${iconPosition}`}
+            align="inline-start"
             className={iconClassName}
           >
             {icon}
@@ -37,6 +42,24 @@ export default function AppInput({
           className="placeholder:text-gray-400 text-sm"
           {...rest}
         />
+
+        {icon && align === "end" && (
+          <InputGroupAddon
+            align="inline-end"
+            className={iconClassName}
+          >
+            {icon}
+          </InputGroupAddon>
+        )}
+
+        {endIcon && (
+          <InputGroupAddon
+            align="inline-end"
+            className={endIconClassName}
+          >
+            {endIcon}
+          </InputGroupAddon>
+        )}
       </InputGroup>
     </Field>
   );

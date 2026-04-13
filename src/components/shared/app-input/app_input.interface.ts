@@ -20,6 +20,16 @@ export interface AppInputProps extends InputHTMLAttributes<HTMLInputElement> {
   iconPosition?: "start" | "end";
 
   /**
+   * @description Legacy alias for iconPosition
+   */
+  position?: "start" | "end";
+
+  /**
+   * @description The icon placed at the end of the input
+   */
+  endIcon?: React.ReactNode;
+
+  /**
    * @description The className of the input
    */
   className?: string;
@@ -28,4 +38,9 @@ export interface AppInputProps extends InputHTMLAttributes<HTMLInputElement> {
    * @description The className of the icon
    */
   iconClassName?: string;
+
+  /**
+   * @description The className of the end icon wrapper
+   */
+  endIconClassName?: string;
 }

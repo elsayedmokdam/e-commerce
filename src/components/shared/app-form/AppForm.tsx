@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AppFormProps } from "./app_form.interface";
 import { useMemo } from "react";
 import { ImSpinner } from "react-icons/im";
+import { FaArrowRight } from "react-icons/fa6";
 
 export default function AppForm({
   fields,
@@ -81,10 +82,16 @@ export default function AppForm({
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`bg-main-color text-white text-base font-semibold px-6 py-3 rounded-xl disabled:opacity-50 hover:bg-green-700 transition duration-200 ease-in-out w-full ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"} flex items-center justify-center gap-2`}
+              className={`bg-main-color text-white text-base font-semibold px-6 py-3 rounded-xl disabled:opacity-50 hover:bg-green-700 transition duration-200 ease-in-out w-full ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"} flex items-center justify-center gap-2 group`}
             >
               <span>{buttonText}</span>
-              {isSubmitting && <ImSpinner className="animate-spin" />}
+              {isSubmitting ? (
+                <ImSpinner className="animate-spin" />
+              ) : (
+                <span className="group-hover:transform group-hover:translate-x-2 duration-200 ease-in-out">
+                  <FaArrowRight />
+                </span>
+              )}
             </button>
           )}
 

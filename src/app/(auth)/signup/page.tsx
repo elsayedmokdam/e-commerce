@@ -23,11 +23,11 @@ const features = [
 export default function Page() {
   return (
     <section className="min-h-screen py-10">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Left Section */}
           <div>
-            <div>
+            <div className="text-center xl:text-left">
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 <span className="text-gray-700">Welcome to</span>{" "}
                 <span className="text-main-color">FreshCart</span>

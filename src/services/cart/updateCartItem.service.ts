@@ -1,11 +1,11 @@
 import { BASE_URL } from "../config";
-import { http } from "../utils/http";
+import { CartResponse } from "../types/cart_interface";
+import { httpClient, HttpResult } from "../utils/http";
 
 export const ROUTE_URL = "/api/v2/cart";
 
-export const updateCartItemService = async (productId: string, payload: any): Promise<any> => {
-  return http(`${BASE_URL}${ROUTE_URL}/${productId}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
+export const updateCartItemService = async (productId: string, payload: {count: number}): Promise<HttpResult<CartResponse>> => {
+  return httpClient.put(`${BASE_URL}${ROUTE_URL}/${productId}`, payload, {
+    requiredAuthToken: true,
+  })
 };

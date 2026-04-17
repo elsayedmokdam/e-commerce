@@ -12,19 +12,31 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import logo from "@/images/logo.png";
-import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import contact from "@public/contact.svg";
-import wishlist from "@public/wishlist.svg";
-import cart from "@public/cart.svg";
 import vector6 from "@public/car.svg";
 import vector7 from "@public/Vector(7).svg";
 import tel from "@public/tel.svg";
 import mail from "@public/mail.svg";
 import AppInput from "../shared/app-input/AppInput";
+import { signOut, useSession } from "next-auth/react";
+import DropDown from "../drop-down/DropDown";
+import { FaBars, FaSearch, FaSignOutAlt, FaTimes } from "react-icons/fa";
+import {
+  FaCartShopping,
+  FaRegHeart,
+  FaRegUser,
+  FaUserPlus,
+} from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import swal from "sweetalert";
+import { cartContext } from "@/app/_providers/context/CartContextProvider";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const route = useRouter();
+
+  const { numOfCartItems } = React.useContext(cartContext);
 
   React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -41,8 +53,30 @@ export function Navbar() {
     }
   };
 
+  const { data } = useSession();
+
+  function handleLogout() {
+    // Use swall before signing out to confirm the action with the user
+    swal({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      buttons: ["Cancel", "Logout"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        signOut({
+          callbackUrl: "/signin", // Redirect to signin page after logout
+          redirect: false,
+        }).then(() => {
+          route.push("/signin"); // Ensure client-side navigation to signin page
+        });
+      }
+    });
+  }
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-18">
       {/* Top of Navbar */}
       <div className="hidden lg:flex items-center justify-between text-gray-500 font-medium text-sm px-30 py-4 ">
         <div className="flex items-center gap-7 text-gray-500 font-medium text-sm">
@@ -60,22 +94,60 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link href="tel:0123456789" className="flex items-center gap-2 ">
-            <img src={tel.src} alt="Contact" />
-            <span>01028340399</span>
-          </Link>
-          <Link
-            href="mailto:sayed.route@gmail.com"
-            className="flex items-center gap-2 "
-          >
-            <img src={mail.src} alt="Contact" />
-            <span>sayed.route@gmail.com</span>
-          </Link>
+        <div className="flex items-center gap-4 ">
+          <div className="relative flex items-center gap-4 after:content-[''] after:w-px after:h-full after:bg-gray-200 after:absolute after:-inset-e-2 after:top-0">
+            <Link href="tel:0123456789" className="flex items-center gap-2 ">
+              <img src={tel.src} alt="Contact" />
+              <span>01028340399</span>
+            </Link>
+            <Link
+              href="mailto:sayed.route@gmail.com"
+              className="flex items-center gap-2 "
+            >
+              <img src={mail.src} alt="Contact" />
+              <span>sayed.route@gmail.com</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {data ? (
+              <div className="flex items-center gap-3">
+                <span className="text-main-color font-semibold text-sm ">
+                  Welcome, {data?.user?.name.split(" ", 1)} !
+                </span>
+                <span
+                  onClick={() => handleLogout()}
+                  className="hover:text-red-500 cursor-pointer flex items-center gap-1 text-red-400"
+                >
+                  <span>
+                    <FaSignOutAlt />
+                  </span>
+                  <span>Sign Out</span>
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link href="/signin" className="flex items-center gap-2">
+                  <span>
+                    <FaRegUser />
+                  </span>
+                  <span>Sign In</span>
+                </Link>
+                <Link href="/signup" className="flex items-center gap-2">
+                  <span>
+                    <FaUserPlus />
+                  </span>
+                  <span>Sign Up</span>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <nav className={`hidden lg:flex items-center justify-between px-30 py-4 transition-all duration-300 fixed w-full z-50 top-0 border-t border-gray-200 ${scrolled ? "bg-white shadow-md" : "top-12 bg-white"}`}>
+      <nav
+        className={`hidden lg:flex items-center justify-between px-30 py-4 transition-all duration-300 fixed w-full z-50 top-0 border-t border-gray-200 ${scrolled ? "bg-white shadow-md" : "top-12 bg-white"}`}
+      >
         {/* Logo */}
         <div>
           <Link href="/">
@@ -96,7 +168,7 @@ export function Navbar() {
         {/* Main links */}
         <div>
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="flex items-center">
               {/* Home */}
               <NavigationMenuItem>
                 <NavigationMenuLink
@@ -183,10 +255,10 @@ export function Navbar() {
                   className={navigationMenuTriggerStyle()}
                 >
                   <Link
-                    className="hover:bg-transparent hover:text-main-color focus:bg-transparent focus:font-bold focus:text-main-color text-lg"
+                    className="hover:bg-transparent text-gray-500 hover:text-main-color focus:bg-transparent focus:font-bold focus:text-main-color text-lg"
                     href="/wishlist"
                   >
-                    <img src={wishlist.src} alt="Wishlist" />
+                    <FaRegHeart className="size-6" />
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -198,21 +270,41 @@ export function Navbar() {
                   className={navigationMenuTriggerStyle()}
                 >
                   <Link
-                    className="hover:bg-transparent hover:text-main-color focus:bg-transparent focus:font-bold focus:text-main-color text-lg"
+                    className="relative hover:bg-transparent text-gray-500 hover:text-main-color focus:bg-transparent focus:font-bold focus:text-main-color"
                     href="/cart"
                   >
-                    <img src={cart.src} alt="Cart" />
+                    <FaCartShopping className="size-6" />
+                    <span className="text-xs absolute top-0 right-2 bg-main-color text-white rounded-full w-5 h-5 flex items-center justify-center">
+                      {numOfCartItems > 9 ? "9+" : numOfCartItems}
+                    </span>
                   </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              {/* User Account */}
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  {data ? (
+                    <DropDown data={data} />
+                  ) : (
+                    <>
+                      {/* Signin Button */}
+                      <Link
+                        href="/signin"
+                        className="bg-main-color text-white px-4 py-2 rounded-full hover:bg-main-color/80 flex items-center gap-2"
+                      >
+                        <span>
+                          <FaRegUser />
+                        </span>
+                        <span>Signin</span>
+                      </Link>
+                    </>
+                  )}
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-
-        {/* Signup Button */}
-        <Link href="/signup" className="bg-main-color text-white px-4 py-2 rounded-full hover:bg-main-color/80">
-          Signup
-        </Link>
       </nav>
 
       {/* Overlay */}
@@ -223,7 +315,7 @@ export function Navbar() {
         ></div>
       )}
 
-      {/* Side Menu */}
+      {/* Mobile Nav */}
       <div className="flex items-center justify-between text-gray-500 font-medium p-4 text-sm lg:hidden fixed w-full z-50 top-0 bg-white ">
         {/* Logo */}
         <img src={logo.src} alt="logo" className="w-28" />
@@ -232,12 +324,17 @@ export function Navbar() {
           {/* Wishlist & Cart */}
           <div className="flex items-center gap-4">
             <Link href="/wishlist" className="flex items-center gap-3 relative">
-              <img src={wishlist.src} alt="Wishlist" />
+              <FaRegHeart className="size-6" />
             </Link>
 
-            <Link href="/cart" className="flex items-center gap-3">
-              <img src={cart.src} alt="Cart" />
+            <Link href="/cart" className="flex items-center gap-3 relative">
+              <FaCartShopping className="size-6" />
+              <span className="text-xs absolute -top-2 -right-2 bg-main-color text-white rounded-full w-5 h-5 flex items-center justify-center">
+                {numOfCartItems > 9 ? "9+" : numOfCartItems}
+              </span>
             </Link>
+
+            {data && <DropDown data={data} />}
           </div>
 
           {/* Hamburger */}
@@ -281,6 +378,7 @@ export function Navbar() {
             >
               Home
             </Link>
+
             <Link
               href="/products"
               className="block p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
@@ -311,7 +409,7 @@ export function Navbar() {
               href="/wishlist"
               className="flex items-center gap-3 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
             >
-              <img src={wishlist.src} alt="Wishlist" />
+              <FaRegHeart className="size-6" />
               Wishlist
             </Link>
 
@@ -319,23 +417,33 @@ export function Navbar() {
               href="/cart"
               className="flex items-center gap-3 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
             >
-              <img src={cart.src} alt="Cart" />
+              <FaCartShopping className="size-6" />
               Cart
             </Link>
           </div>
 
           <div className="my-4 border-t"></div>
 
-          {/* Buttons */}
-          <div className="px-4 space-y-3">
-            <button className="w-full bg-green-600 text-white py-2 rounded-lg">
-              Sign In
-            </button>
+          {!data && (
+            <>
+              {/* Buttons */}
+              <div className="px-4 space-y-3">
+                <Link
+                  href="/signin"
+                  className="flex items-center justify-center bg-green-600 text-white py-2 rounded-lg"
+                >
+                  Sign In
+                </Link>
 
-            <button className="w-full border border-green-600 text-green-600 py-2 rounded-lg">
-              Sign Up
-            </button>
-          </div>
+                <Link
+                  href="/signup"
+                  className="flex items-center justify-center border border-green-600 text-green-600 py-2 rounded-lg"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </>
+          )}
 
           {/* Support */}
           <Link href="/contact">

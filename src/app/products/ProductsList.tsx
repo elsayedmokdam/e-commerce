@@ -7,7 +7,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import $SERVICE_REPOSITORY from "@/services/service.repo";
 import AppButton from "@/components/shared/app-button/AppButton";
 import { FaSpinner } from "react-icons/fa6";
-import { notify } from "@/utilities/alerts";
+import { notify } from "@/services/utils/helpers/alerts";
 
 interface ProductsListProps {
   initialProducts: ProductData[];
@@ -36,12 +36,14 @@ export function ProductsList({
         page: nextPage.toString(),
       });
 
-      if (response.data && response.data.length > 0) {
-        setProducts((prev) => [...prev, ...response.data]);
+      if (response.ok && response.data.data && response.data.data.length > 0) {
+        setProducts((prev) => [...prev, ...response.data.data]);
         setCurrentPageNum(nextPage);
       }
     } catch (error) {
-      notify.error("Failed to load more products. Please try again.");
+      notify.error(
+        "Failed to load more products. Please try again.",
+      );
       setHasError(true);
     } finally {
       setIsLoading(false);

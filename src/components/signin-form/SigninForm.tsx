@@ -13,10 +13,10 @@ import { FormField } from "../shared/app-form/app_form.interface";
 import AppInput from "../shared/app-input/AppInput";
 import { MdEmail } from "react-icons/md";
 import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
-import { notify } from "@/utilities/alerts";
 import { SigninData } from "@/services/types/signin_interface";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { notify } from "@/services/utils/helpers/alerts";
 
 const socialButtons = [
   {

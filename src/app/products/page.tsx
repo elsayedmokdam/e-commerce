@@ -12,9 +12,14 @@ async function ProductsContent() {
     limit: "15",
     page: "1",
   });
-  const products: ProductData[] = response.data;
-  const currentPage = response.metadata.currentPage;
-  const numberOfPages = response.metadata.numberOfPages;
+
+  if (!response.ok) {
+    throw new Error(response.error.message);
+  }
+
+  const products: ProductData[] = response.data.data;
+  const currentPage = response.data.metadata.currentPage;
+  const numberOfPages = response.data.metadata.numberOfPages;
 
   return (
     <ProductsList

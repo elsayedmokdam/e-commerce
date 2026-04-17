@@ -6,5 +6,5 @@ export const ROUTE_URL = "/api/v2/cart";
 export const getCartService = async (): Promise<any> => {
   return http(`${BASE_URL}${ROUTE_URL}`, {
     method: "GET",
-  });
+  }, { requiredAuthToken: true });
 };

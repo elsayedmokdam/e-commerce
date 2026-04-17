@@ -13,8 +13,9 @@ import AppInput from "../shared/app-input/AppInput";
 import { MdEmail } from "react-icons/md";
 import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
 import { SignupData } from "@/services/types/signup_interface";
-import { SignupUser } from "./signup.action";
-import { notify } from "@/utilities/alerts";
+import { SignupUserAction } from "./signup.action";
+import { useRouter } from "next/navigation";
+import { notify } from "@/services/utils/helpers/alerts";
 
 const fields: FormField[] = [
   {
@@ -96,18 +97,19 @@ const socialButtons = [
 ];
 
 export default function SignupForm() {
-   async function onSubmit(data: SignupData) {
-     try {
-       await SignupUser(data);
+  const route = useRouter();
+  async function onSubmit(data: SignupData) {
+    try {
+      await SignupUserAction(data);
 
-       notify.success("Signup successful!");
-       
-     } catch (error: any) {
-       notify.error(
-         "Signup failed: an error occurred while signing up. Please check your credentials and try again.",
-       );
-     }
-   }
+      notify.success("Signup successful!");
+      route.push("/signin");
+    } catch (error: any) {
+      notify.error(
+        "Signup failed: an error occurred while signing up. Please check your credentials and try again.",
+      );
+    }
+  }
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-2">

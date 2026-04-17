@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 
 export default function PageHeader({
   icon,
@@ -8,7 +9,7 @@ export default function PageHeader({
   bgColor,
   iconBgColor,
 }: {
-  icon: string;
+  icon: string | React.ReactNode;
   title: string;
   pageName: string;
   subtitle: string;
@@ -32,7 +33,7 @@ export default function PageHeader({
         <div
           className={`size-17 rounded-2xl text-white text-3xl flex items-center justify-center shadow-lg border border-white/20 ${iconBgColor}`}
         >
-          <img src={icon} alt={title} />
+          {typeof icon === "string" ? <img src={icon} alt={title} /> : icon}
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-4xl font-bold text-white">{title}</h1>

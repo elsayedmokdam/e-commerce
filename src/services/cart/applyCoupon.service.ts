@@ -7,5 +7,5 @@ export const applyCouponService = async (payload: { coupon: string }): Promise<a
   return http(`${BASE_URL}${ROUTE_URL}`, {
     method: "PUT",
     body: JSON.stringify(payload),
-  });
+  }, { requiredAuthToken: true });
 };

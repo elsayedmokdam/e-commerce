@@ -24,16 +24,16 @@ export const nextAuthConfig: NextAuthOptions = {
           return null;
         }
 
-        const data = await $SERVICE_REPOSITORY.Auth.signin(credentials);
+        const response = await $SERVICE_REPOSITORY.Auth.signin(credentials);
 
-        if (data.message === "success" && data.user && data.token) {
+        if (response.ok && response.data.message === "success" && response.data.user && response.data.token) {
           // Return user object with necessary properties for session.
           // This object + secret key will be used to generate the JWT token for the session.
           return {
-            id: data.user.id || data.user._id,
-            name: data.user.name,
-            email: data.user.email,
-            realToken: data.token,
+            id: response.data.user.email,
+            name: response.data.user.name,
+            email: response.data.user.email,
+            realToken: response.data.token,
           };
         }
         return null;
@@ -49,8 +49,6 @@ export const nextAuthConfig: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 24 * 60 * 60, // 24 hours
   },
-
-  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     // This function is called in each successful authentication and in each navigation.
@@ -71,8 +69,11 @@ export const nextAuthConfig: NextAuthOptions = {
         session.user.id = token.sub as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
+        if (token.realToken) {
+          session.realToken = token.realToken;
+        }
       }
-     console.log("Session callback called with session:", session, "and token:", token);
+    //  console.log("Session callback called with session:", session, "and token:", token);
       return session;
     },
   },

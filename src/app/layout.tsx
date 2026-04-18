@@ -34,6 +34,7 @@ export default async function RootLayout({
   if (response.ok) {
     userCart = response.data;
   }
+
   return (
     <html lang="en" className={`${exo.variable}`}>
       <body>

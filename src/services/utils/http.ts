@@ -3,6 +3,7 @@ export interface HttpConfig {
   withCredentials?: boolean;
   timeout?: number;
   requiredAuthToken?: boolean;
+  token?: string;
 }
 
 export interface HttpErrorShape {
@@ -21,6 +22,7 @@ const DEFAULT_CONFIG: Required<HttpConfig> = {
   withCredentials: false,
   timeout: 30000,
   requiredAuthToken: false,
+  token: "",
 };
 
 async function createHeaders(
@@ -36,23 +38,9 @@ async function createHeaders(
 
   // Auth Token
   if (config.requiredAuthToken) {
-    let token: string | undefined;
-
     try {
-      // if (typeof window === "undefined") {
-      //   const { getMyToken } = await import("./helpers/getMyToken");
-      //   const decoded = await getMyToken();
-      //   token = decoded?.realToken;
-      // } else {
-      //   const { getSession } = await import("next-auth/react");
-      //   const session = await getSession();
-      //   token = session?.realToken;
-      // }
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZGQyNjRlNDVlYWMzNTc1OTQyMzcwZSIsIm5hbWUiOiJlbHNheWVkIG1va2RhbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzc2MzM4MDE5LCJleHAiOjE3ODQxMTQwMTl9.tdWy4SKQS6HbCcfLD-KfLHfOSHPbO_c4wu5TtHVCl_A";
-
-      if (token) {
-        headers.set("token", token);
+      if (config.requiredAuthToken && config.token) {
+        headers.set("token", config.token);
       }
     } catch {
       console.error("Failed to get auth token");

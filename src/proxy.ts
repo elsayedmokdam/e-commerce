@@ -2,12 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 const AUTH_ROUTES = ["/signin", "/signup"];
-const PROTECTED_ROUTES = [
-  "/checkout",
-  "/orders",
-  "/profile",
-  "/settings",
-];
+const PROTECTED_ROUTES = ["/checkout", "/orders", "/profile", "/settings"];
 
 export async function proxy(req: NextRequest) {
   const token = await getToken({
@@ -41,12 +36,5 @@ export async function proxy(req: NextRequest) {
 
 // Apply this middleware to all routes except for static files and API routes
 export const config = {
-  matcher: [
-    "/checkout/:path*",
-    "/orders/:path*",
-    "/profile/:path*",
-    "/settings/:path*",
-    "/signin/:path*",
-    "/signup/:path*",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/auth).*)"],
 };

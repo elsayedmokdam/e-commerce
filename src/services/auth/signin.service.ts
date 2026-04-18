@@ -13,5 +13,7 @@ export const ROUTE_URL = "/api/v1/auth/signin";
 export const signinService = async (
   payload: SigninData,
 ): Promise<HttpResult<SigninResponse>> => {
-  return httpClient.post<SigninResponse>(`${BASE_URL}${ROUTE_URL}`, payload);
+  return httpClient.post<SigninResponse>(`${BASE_URL}${ROUTE_URL}`, payload, {
+    requiredAuthToken: false,
+  });
 };

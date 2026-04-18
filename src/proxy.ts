@@ -1,58 +1,52 @@
-// import { getToken } from "next-auth/jwt";
-// import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
+const AUTH_ROUTES = ["/signin", "/signup"];
+const PROTECTED_ROUTES = [
+  "/checkout",
+  "/orders",
+  "/profile",
+  "/settings",
+];
 
-import { NextResponse } from "next/server";
+export async function proxy(req: NextRequest) {
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-// const AUTH_ROUTES = ["/signin", "/signup"];
-// const PROTECTED_ROUTES = [
-//   "/checkout",
-//   "/orders",
-//   "/profile",
-//   "/settings",
-// ];
+  const { pathname } = req.nextUrl;
 
-// export async function middleware(req: NextRequest) {
-//   const token = await getToken({
-//     req,
-//     secret: process.env.NEXTAUTH_SECRET,
-//   });
+  const isAuth: boolean = !!token;
 
-//   const { pathname } = req.nextUrl;
+  // Check if the current route is an auth page or a protected page
+  const isAuthPage: boolean = AUTH_ROUTES.includes(pathname);
+  const isProtected: boolean = PROTECTED_ROUTES.some((route) =>
+    pathname.startsWith(route),
+  );
 
-//   const isAuth: boolean = !!token;
+  // If the user is not authenticated and trying to access a protected route, redirect to signin page.
+  if (!isAuth && isProtected) {
+    return NextResponse.redirect(new URL("/signin", req.url));
+  }
 
-//   // Check if the current route is an auth page or a protected page
-//   const isAuthPage: boolean = AUTH_ROUTES.includes(pathname);
-//   const isProtected: boolean = PROTECTED_ROUTES.some((route) =>
-//     pathname.startsWith(route),
-//   );
+  // If the user is authenticated and trying to access an auth page (signin/signup), redirect to home page.
+  if (isAuth && isAuthPage) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
 
-//   // If the user is not authenticated and trying to access a protected route, redirect to signin page.
-//   if (!isAuth && isProtected) {
-//     return NextResponse.redirect(new URL("/signin", req.url));
-//   }
-
-//   // If the user is authenticated and trying to access an auth page (signin/signup), redirect to home page.
-//   if (isAuth && isAuthPage) {
-//     return NextResponse.redirect(new URL("/", req.url));
-//   }
-
-//   // For all other cases, allow the request to proceed.
-//   return NextResponse.next();
-// }
-
-// // Apply this middleware to all routes except for static files and API routes
-// export const config = {
-//   matcher: [
-//     "/checkout/:path*",
-//     "/orders/:path*",
-//     "/profile/:path*",
-//     "/settings/:path*",
-//     "/signin",
-//     "/signup",
-//   ],
-// };
-
-export function proxy() {
+  // For all other cases, allow the request to proceed.
   return NextResponse.next();
 }
+
+// Apply this middleware to all routes except for static files and API routes
+export const config = {
+  matcher: [
+    "/checkout/:path*",
+    "/orders/:path*",
+    "/profile/:path*",
+    "/settings/:path*",
+    "/signin",
+    "/signup",
+  ],
+};
+

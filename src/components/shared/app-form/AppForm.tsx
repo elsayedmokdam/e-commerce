@@ -1,10 +1,13 @@
+"use client";
+
 import { useForm, Controller } from "react-hook-form";
-import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AppFormProps } from "./app_form.interface";
 import { useMemo } from "react";
 import { ImSpinner } from "react-icons/im";
 import { FaArrowRight } from "react-icons/fa6";
+
+import { FieldLabel, FieldError } from "@/components/ui/field";
+import { AppFormProps } from "./app_form.interface";
 
 export default function AppForm({
   fields,
@@ -19,6 +22,12 @@ export default function AppForm({
   layoutClassName = "",
   children,
 }: AppFormProps) {
+
+  const resolver = useMemo(() => {
+    if (!schema) return undefined;
+    return zodResolver(schema as any);
+  }, [schema]);
+
   const {
     control,
     handleSubmit,
@@ -26,23 +35,29 @@ export default function AppForm({
     reset,
   } = useForm({
     defaultValues,
-    mode: "all",
-    resolver: schema ? zodResolver(schema as any) : undefined,
+    mode: "onChange",
+    resolver,
   });
 
-  // Filter visible fields only
-  const visibleFields = useMemo(
-    () => fields.filter((field) => !field.hidden),
-    [fields],
-  );
+  const visibleFields = useMemo(() => {
+    return fields?.filter((f) => !f.hidden) ?? [];
+  }, [fields]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={formClassName}>
       {/* Fields */}
       <div className={layoutClassName}>
         {visibleFields.map((fieldItem) => {
-          const Component = components[fieldItem.type];
-          if (!Component) return null;
+          const Component = components?.[fieldItem.type];
+
+          if (!Component) {
+            if (process.env.NODE_ENV === "development") {
+              console.warn(
+                `[AppForm] Missing component for type: ${fieldItem.type}`,
+              );
+            }
+            return null;
+          }
 
           return (
             <Controller
@@ -50,7 +65,7 @@ export default function AppForm({
               name={fieldItem.name}
               control={control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
+                <div data-invalid={fieldState.invalid}>
                   {fieldItem.label && (
                     <FieldLabel>{fieldItem.label}</FieldLabel>
                   )}
@@ -58,39 +73,39 @@ export default function AppForm({
                   <Component
                     {...field}
                     {...fieldItem.props}
-                    placeholder={fieldItem.placeholder}
                     value={field.value ?? ""}
+                    placeholder={fieldItem.placeholder}
                   />
 
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
-                </Field>
+                </div>
               )}
             />
           );
         })}
       </div>
 
-      {/* Custom children (checkboxes, alerts, etc.) */}
+      {/* Extra content */}
       {children}
 
-      {/* Buttons */}
+      {/* Actions */}
       {(submitButton || resetButton) && (
         <div className="flex flex-col gap-3 mt-6 sm:flex-row sm:gap-2">
           {submitButton && (
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`bg-main-color text-white text-base font-semibold px-6 py-3 rounded-xl disabled:opacity-50 hover:bg-green-700 transition duration-200 ease-in-out w-full ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"} flex items-center justify-center gap-2 group`}
+              className={`bg-main-color text-white font-semibold px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 transition
+                ${isSubmitting ? "opacity-60 cursor-not-allowed" : "hover:bg-green-700"}`}
             >
               <span>{buttonText}</span>
+
               {isSubmitting ? (
                 <ImSpinner className="animate-spin" />
               ) : (
-                <span className="group-hover:transform group-hover:translate-x-2 duration-200 ease-in-out">
-                  <FaArrowRight />
-                </span>
+                <FaArrowRight />
               )}
             </button>
           )}
@@ -99,7 +114,7 @@ export default function AppForm({
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full bg-gray-200 px-6 py-3 rounded-xl hover:bg-gray-300 transition duration-200 ease-in-out cursor-pointer text-gray-800 font-semibold"
+              className="w-full bg-gray-200 px-6 py-3 rounded-xl hover:bg-gray-300 transition"
             >
               Reset
             </button>

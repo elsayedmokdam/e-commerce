@@ -22,7 +22,9 @@ export default function FeaturedProducts({
             href="/products"
             className="group flex items-center gap-1 text-sm font-semibold text-main-color transition-colors hover:text-teal-600 md:text-base"
           >
-            <span>View All Products</span>
+            <span>
+              View All <span className="hidden md:inline">Products</span>
+            </span>
             <span className="group-hover:translate-x-1 transition-transform">
               <FaArrowRightLong size={18} />
             </span>

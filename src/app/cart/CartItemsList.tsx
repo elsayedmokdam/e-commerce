@@ -88,7 +88,7 @@ export default function CartItemsList({
               <div className="flex justify-between items-center">
                 <Link
                   href="/"
-                  className="mt-2 text-green-600 flex items-center gap-1 justify-center group"
+                  className="text-green-600 flex items-center gap-1 justify-center group"
                 >
                   <span className="group-hover:-translate-x-1 transition">
                     <BsArrowLeft size={20} />

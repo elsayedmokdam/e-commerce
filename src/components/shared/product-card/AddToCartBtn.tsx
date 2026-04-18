@@ -6,10 +6,11 @@ import { FiShoppingCart } from "react-icons/fi";
 import { addToCartAction } from "./cart.action";
 import { cartContext } from "@/app/_providers/context/CartContextProvider";
 import { notify } from "@/services/utils/helpers/alerts";
+import { FaSpinner } from "react-icons/fa6";
 
 export default function AddToCartBtn({ productId }: { productId: string }) {
   const [loading, setLoading] = useState(false);
-  const { setNumOfCartItems, setCartItems} = useContext(cartContext);
+  const { setNumOfCartItems, setCartItems } = useContext(cartContext);
 
   async function handleAddToCart(productId: string) {
     if (loading) return;
@@ -35,12 +36,15 @@ export default function AddToCartBtn({ productId }: { productId: string }) {
       onClick={() => handleAddToCart(productId)}
     >
       {loading ? (
-        "Adding"
+        <span className="flex items-center gap-2">
+          Adding
+          <FaSpinner className="animate-spin " />
+        </span>
       ) : (
-        <>
-          <FiShoppingCart size={16} />
+        <span className="flex items-center gap-2">
+          <FiShoppingCart />
           Add to Cart
-        </>
+        </span>
       )}
     </AppButton>
   );

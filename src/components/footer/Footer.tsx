@@ -232,7 +232,7 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="/login"
+                    href="/signin"
                     className="hover:text-main-color transition-colors"
                   >
                     Sign In

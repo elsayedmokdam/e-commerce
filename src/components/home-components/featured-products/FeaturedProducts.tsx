@@ -20,10 +20,12 @@ export default function FeaturedProducts({
           </div>
           <Link
             href="/products"
-            className="flex items-center gap-1 text-sm font-semibold text-main-color transition-colors hover:text-teal-600 md:text-base"
+            className="group flex items-center gap-1 text-sm font-semibold text-main-color transition-colors hover:text-teal-600 md:text-base"
           >
-            View All Products
-            <FaArrowRightLong size={18} />
+            <span>View All Products</span>
+            <span className="group-hover:translate-x-1 transition-transform">
+              <FaArrowRightLong size={18} />
+            </span>
           </Link>
         </div>
 

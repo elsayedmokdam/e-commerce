@@ -1,10 +1,11 @@
 import { ProductData } from "@/services/types/products_interface";
 import Image from "next/image";
 import AppButton from "../app-button/AppButton";
-import { FiEye, FiHeart, FiRefreshCw, FiShoppingCart } from "react-icons/fi";
+import { FiHeart, FiRefreshCw } from "react-icons/fi";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import AddToCartBtn from "./AddToCartBtn";
+import ViewProductBtn from "./ViewProductBtn";
 
 // Function to format the title
 function formatTitle(title: string) {
@@ -20,7 +21,6 @@ export default function ProductCard({ product }: { product: ProductData }) {
     <div className="group bg-white rounded-lg border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden ">
       <Link
         href={`/products/${product.id}`}
-        key={product.id}
         className="flex flex-col"
       >
         {/* Product Image Container */}
@@ -54,12 +54,9 @@ export default function ProductCard({ product }: { product: ProductData }) {
               <AppButton className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer">
                 <FiHeart size={18} className="text-gray-800" />
               </AppButton>
-              <Link
-                href={`/products/${product.id}`}
-                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
-              >
-                <FiEye size={18} className="text-gray-800" />
-              </Link>
+
+              <ViewProductBtn id={product.id} />
+
               <AppButton className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer">
                 <FiRefreshCw size={18} className="text-gray-800" />
               </AppButton>

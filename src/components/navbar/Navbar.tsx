@@ -287,7 +287,7 @@ export function Navbar() {
                   {data ? (
                     <DropDown data={data} />
                   ) : (
-                    <>
+                    <div>
                       {/* Signin Button */}
                       <Link
                         href="/signin"
@@ -298,7 +298,7 @@ export function Navbar() {
                         </span>
                         <span>Signin</span>
                       </Link>
-                    </>
+                    </div>
                   )}
                 </NavigationMenuLink>
               </NavigationMenuItem>

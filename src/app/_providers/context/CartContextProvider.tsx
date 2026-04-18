@@ -24,20 +24,26 @@ export default function CartContextProvider({
   const { status } = useSession();
 
   const [numOfCartItems, setNumOfCartItems] = useState(
-    userCart?.numOfCartItems || 0,
+    userCart?.numOfCartItems ?? 0,
   );
 
   const [cartItems, setCartItems] = useState<CartResponse | null>(
-    userCart || null,
+    userCart ?? null,
   );
 
   useEffect(() => {
+    if (status === "loading") return;
+
+    if (status === "unauthenticated") {
+      setNumOfCartItems(0);
+      setCartItems(null);
+      return;
+    }
+    
     if (status === "authenticated" && userCart) {
       setNumOfCartItems(userCart.numOfCartItems);
       setCartItems(userCart);
-    } else {
-      setNumOfCartItems(0);
-      setCartItems(null);
+      return;
     }
   }, [status, userCart]);
 
@@ -46,7 +52,7 @@ export default function CartContextProvider({
       value={{
         numOfCartItems,
         setNumOfCartItems,
-        cartItems,        
+        cartItems,
         setCartItems,
       }}
     >

@@ -46,7 +46,7 @@ export const config = {
     "/orders/:path*",
     "/profile/:path*",
     "/settings/:path*",
-    "/signin",
-    "/signup",
+    "/signin/:path*",
+    "/signup/:path*",
   ],
 };

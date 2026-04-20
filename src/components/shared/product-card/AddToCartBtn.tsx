@@ -3,7 +3,7 @@
 import { useContext, useState } from "react";
 import AppButton from "../app-button/AppButton";
 import { FiShoppingCart } from "react-icons/fi";
-import { addToCartAction } from "./cart.action";
+import { addToCartAction } from "../../../services/actions/cart.action";
 import { cartContext } from "@/app/_providers/context/CartContextProvider";
 import { notify } from "@/services/utils/helpers/alerts";
 import { FaSpinner } from "react-icons/fa6";

@@ -7,10 +7,12 @@ import AppButton from "../app-button/AppButton";
 import {
   removeFromCartAction,
   updateCartItemAction,
-} from "../product-card/cart.action";
+} from "../../../services/actions/cart.action";
 import { useContext, useState } from "react";
 import { notify } from "@/services/utils/helpers/alerts";
 import { cartContext } from "@/app/_providers/context/CartContextProvider";
+import formatPrice from "@/lib/helpers/formatPrice";
+import formatTitle from "@/lib/helpers/formatTitle";
 
 export function CartItemCard({ product }: { product: Product }) {
   const {
@@ -129,7 +131,7 @@ export function CartItemCard({ product }: { product: Product }) {
               href={`/products/${_id}`}
               className="font-semibold text-sm sm:text-base hover:text-green-700 transition"
             >
-              {title}
+              {formatTitle(title, 30)}
             </Link>
 
             <p className="text-xs text-green-700 bg-green-100 px-3 py-1 rounded-full w-fit mt-1">
@@ -137,7 +139,7 @@ export function CartItemCard({ product }: { product: Product }) {
             </p>
 
             <p className="mt-2 text-sm">
-              <span className="font-bold text-green-600">{price} EGP</span>{" "}
+              <span className="font-bold text-green-600">{formatPrice(price)} EGP</span>{" "}
               <span className="text-gray-400 text-xs">per unit</span>
             </p>
           </div>
@@ -170,7 +172,7 @@ export function CartItemCard({ product }: { product: Product }) {
               <div className="text-right">
                 <p className="text-xs text-gray-400">Total</p>
                 <p className="font-bold text-base sm:text-lg">
-                  {count * price} EGP
+                  {formatPrice(price * count)} EGP
                 </p>
               </div>
 

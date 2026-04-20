@@ -101,7 +101,7 @@ export function Navbar() {
               <span>01028340399</span>
             </Link>
             <Link
-              href="mailto:sayed.route@gmail.com"
+              href="mailto:elsayedmokdam@gmail.com"
               className="flex items-center gap-2 "
             >
               <img src={mail.src} alt="Contact" />

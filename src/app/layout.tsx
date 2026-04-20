@@ -7,9 +7,10 @@ import { Footer } from "@/components/footer/Footer";
 import { Toaster } from "react-hot-toast";
 import MySessionProvider from "./_providers/MySessionProvider";
 import CartContextProvider from "./_providers/context/CartContextProvider";
-import { getLogedUserCartAction } from "@/components/shared/product-card/cart.action";
+import { getLogedUserCartAction } from "@/services/actions/cart.action";
 import { HttpResult } from "@/services/utils/http";
 import { CartResponse } from "@/services/types/cart_interface";
+import { getMyToken } from "@/services/utils/helpers/getMyToken";
 const exo = Exo({
   variable: "--font-exo",
   subsets: ["latin"],
@@ -34,6 +35,9 @@ export default async function RootLayout({
   if (response.ok) {
     userCart = response.data;
   }
+
+  const token = await getMyToken();
+  console.log(token?.realToken);
 
   return (
     <html lang="en" className={`${exo.variable}`}>

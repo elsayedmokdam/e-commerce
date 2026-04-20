@@ -82,5 +82,7 @@ export interface AppFormProps<T extends FieldValues = any> {
 
   /** Extra JSX */
   children?: React.ReactNode;
+
+  ref?: React.Ref<HTMLFormElement>;
 }
 

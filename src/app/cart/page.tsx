@@ -19,7 +19,7 @@ export default function page() {
         bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
         icon={<FaCartShopping className="size-6" />}
         title="My Cart"
-        pageName="Cart"
+        pageName={[{ name: "Cart", href: "/cart" }]}
         subtitle="Review your cart and proceed to checkout"
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />

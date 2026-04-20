@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiTrash2 } from "react-icons/fi";
 import { cartContext } from "../_providers/context/CartContextProvider";
-import { clearCartAction } from "@/components/shared/product-card/cart.action";
+import { clearCartAction } from "@/services/actions/cart.action";
 import { notify } from "@/services/utils/helpers/alerts";
 
 export default function CartItemsList({
@@ -60,7 +60,7 @@ export default function CartItemsList({
       }
     });
   }
-  
+
   return (
     <section className="w-full bg-gray-50 py-10 lg:py-14 xl:py-18 px-5 md:px-7 lg:px-9">
       <div className="max-w-7xl mx-auto">
@@ -96,7 +96,10 @@ export default function CartItemsList({
                   <span>Continue Shopping</span>
                 </Link>
 
-                <AppButton onClick={clearCart} className="bg-transparent hover:bg-transparent hover:text-red-500 text-gray-400 flex items-center gap-1">
+                <AppButton
+                  onClick={clearCart}
+                  className="bg-transparent hover:bg-transparent hover:text-red-500 text-gray-400 flex items-center gap-1"
+                >
                   <span>
                     <FiTrash2 size={20} />
                   </span>

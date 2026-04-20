@@ -5,7 +5,6 @@ import HomeForm from "@/components/home-components/home-form/HomeForm";
 import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { ProductData } from "@/services/types/products_interface";
 import { CategoryData } from "@/services/types/categories_interface";
-import { removeFromCartAction } from "@/components/shared/product-card/cart.action";
 
 export const dynamic = "force-dynamic";
 

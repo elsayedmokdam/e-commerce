@@ -13,7 +13,7 @@ import AppInput from "../shared/app-input/AppInput";
 import { MdEmail } from "react-icons/md";
 import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
 import { SignupData } from "@/services/types/signup_interface";
-import { SignupUserAction } from "./signup.action";
+import { SignupUserAction } from "../../services/actions/signup.action";
 import { useRouter } from "next/navigation";
 import { notify } from "@/services/utils/helpers/alerts";
 

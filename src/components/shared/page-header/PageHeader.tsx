@@ -1,6 +1,20 @@
 import Link from "next/link";
 import React from "react";
 
+export interface PageHeaderProps {
+  icon: string | React.ReactNode;
+  title: string;
+  pageName: PageName[];
+  subtitle: string;
+  bgColor: string;
+  iconBgColor: string;
+}
+
+export interface PageName {
+  name: string;
+  href: string;
+}
+
 export default function PageHeader({
   icon,
   title,
@@ -8,24 +22,27 @@ export default function PageHeader({
   subtitle,
   bgColor,
   iconBgColor,
-}: {
-  icon: string | React.ReactNode;
-  title: string;
-  pageName: string;
-  subtitle: string;
-  bgColor: string;
-  iconBgColor: string;
-}) {
+}: PageHeaderProps) {
   return (
     <div
       className={`min-h-30 flex flex-col justify-center gap-5 px-4 md:px-8 lg:px-15 xl:px-30 py-8 md:py-10 lg:py-12 ${bgColor}`}
     >
-      <div className="nav-linls flex items-center font-medium">
+      <div className="nav-linls flex items-center gap-2 font-medium">
         <Link className="text-gray-300 hover:text-white" href={"/"}>
           Home
         </Link>
-        <span className="mx-2 text-gray-300">/</span>
-        <h4 className="text-white">{pageName}</h4>
+        {pageName.map((name, index) => (
+          <span key={index}>
+            <span className="text-gray-300">/ </span>
+            {pageName.length - 1 === index ? (
+              <span className="text-white">{name.name}</span>
+            ) : (
+              <Link className="text-gray-300 hover:text-white" href={name.href}>
+                {name.name}
+              </Link>
+            )}
+          </span>
+        ))}
       </div>
 
       <div className="flex items-center gap-5">

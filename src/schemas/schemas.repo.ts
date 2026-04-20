@@ -1,7 +1,9 @@
+import { checkoutSchemaValidation } from "./checkoutSchema";
 import { signinSchemaValidation } from "./signinSchema";
 import { signupSchemaValidation } from "./signupSchema";
 
 export const $SCHEMAS_REPOSITORY = {
   SIGNUP_FORM: signupSchemaValidation,
   SIGNIN_FORM: signinSchemaValidation,
+  CHECKOUT_FORM: checkoutSchemaValidation,
 } as const;

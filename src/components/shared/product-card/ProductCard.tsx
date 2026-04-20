@@ -6,38 +6,33 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import AddToCartBtn from "./AddToCartBtn";
 import ViewProductBtn from "./ViewProductBtn";
-
-// Function to format the title
-function formatTitle(title: string) {
-  const maxLength = 30; // Maximum characters before truncation
-  if (title.length > maxLength) {
-    return title.substring(0, maxLength) + "...";
-  }
-  return title;
-}
+import formatTitle from "@/lib/helpers/formatTitle";
+import formatPrice from "@/lib/helpers/formatPrice";
 
 export default function ProductCard({ product }: { product: ProductData }) {
+  const hasDiscount =
+    product.price > 0 && product.priceAfterDiscount !== 0 &&
+    product.priceAfterDiscount !== undefined &&
+    product.priceAfterDiscount < product.price;
+
+    // console.log("price after discount", product.priceAfterDiscount, "price", product.price);
+
+    const discountPercentage = hasDiscount && product.priceAfterDiscount
+      ? Math.round(
+          ((product.price - product.priceAfterDiscount) / product.price) * 100,
+        )
+      : 0;
   return (
     <div className="group bg-white rounded-lg border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden ">
-      <Link
-        href={`/products/${product.id}`}
-        className="flex flex-col"
-      >
+      <Link href={`/products/${product.id}`} className="flex flex-col">
         {/* Product Image Container */}
         <div className="relative rounded-t-lg overflow-hidden bg-gray-50 aspect-square md:aspect-video lg:aspect-square flex items-center justify-center">
           {/* Discount Badge */}
-          {product.priceAfterDiscount &&
-            product.priceAfterDiscount < product.price && (
-              <div className="absolute top-5 left-5 bg-red-500 text-white px-2 py-1 rounded text-xs md:text-sm font-semibold z-10">
-                -{" "}
-                {Math.round(
-                  ((product.price - product.priceAfterDiscount) /
-                    product.price) *
-                    100,
-                )}
-                %
-              </div>
-            )}
+          {hasDiscount && (
+            <div className="absolute top-5 left-5 bg-red-500 text-white px-2 py-1 rounded text-xs md:text-sm font-semibold z-10">
+              - {discountPercentage}%
+            </div>
+          )}
 
           {/* Product Image */}
           <Image
@@ -73,7 +68,7 @@ export default function ProductCard({ product }: { product: ProductData }) {
 
           {/* Product Name */}
           <h3 className="text-sm md:text-base font-semibold text-gray-800 line-clamp-2 mb-2 md:mb-3">
-            {formatTitle(product.title)}
+            {formatTitle(product.title, 30)}
           </h3>
 
           {/* Rating */}
@@ -100,20 +95,19 @@ export default function ProductCard({ product }: { product: ProductData }) {
           <div className="flex items-center gap-2">
             <span className="text-base md:text-lg font-bold text-main-color">
               {product.priceAfterDiscount
-                ? product.priceAfterDiscount
-                : product.price}{" "}
+                ? formatPrice(product.priceAfterDiscount)
+                : formatPrice(product.price)}{" "}
               EGP
             </span>
-            {product.priceAfterDiscount &&
-              product.priceAfterDiscount < product.price && (
-                <span className="text-xs font-medium text-red-500 line-through">
-                  {product.price} EGP
-                </span>
-              )}
+            {hasDiscount && (
+              <span className="text-xs font-medium text-red-500 line-through">
+                {formatPrice(product.price)} EGP
+              </span>
+            )}
           </div>
         </div>
       </Link>
-      
+
       <div className="p-3 md:p-4">
         {/* Add to Cart */}
         <AddToCartBtn key={product.id} productId={product.id} />

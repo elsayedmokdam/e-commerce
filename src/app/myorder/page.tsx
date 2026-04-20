@@ -1,6 +1,6 @@
 
 export default function page() {
   return (
-    <div>Orders page</div>
+    <div>My Order page</div>
   )
 }

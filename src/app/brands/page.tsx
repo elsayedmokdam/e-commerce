@@ -6,7 +6,7 @@ export default function page() {
     <>
       <PageHeader
         title="Top Brands"
-        pageName="Brands"
+        pageName={[{ name: "Brands", href: "/brands" }]}
         subtitle="Shop from your favorite brands and discover new ones"
         bgColor="bg-linear-to-br from-[#7F22FE] via-[#8E51FF] to-[#C27AFF] "
         icon={brandsIcon.src}

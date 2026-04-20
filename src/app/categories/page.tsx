@@ -14,7 +14,7 @@ export default function page() {
         bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
         icon={icon.src}
         title="All Categories"
-        pageName="Categories"
+        pageName={[{ name: "Categories", href: "/categories" }]}
         subtitle="Explore our complete category collection"
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />

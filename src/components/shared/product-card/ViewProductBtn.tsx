@@ -13,9 +13,9 @@ export default function ViewProductBtn({ id }: { id: string }) {
         e?.stopPropagation();
         router.push(`/products/${id}`);
       }}
-      className="flex items-center justify-center w-10 h-10 rounded-full bg-white"
+      className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
     >
-      <FiEye size={18} />
+      <FiEye size={18} className="text-gray-800" />
     </AppButton>
   );
 }

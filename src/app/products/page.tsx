@@ -40,7 +40,7 @@ export default function page() {
         bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
         icon={icon.src}
         title="All Products"
-        pageName="Products"
+        pageName={[{ name: "Products", href: "/products" }]}
         subtitle="Explore our complete product collection"
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />

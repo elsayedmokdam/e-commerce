@@ -4,11 +4,9 @@ import * as React from "react";
 import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import logo from "@/images/logo.png";
@@ -30,6 +28,7 @@ import {
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
 import { cartContext } from "@/app/_providers/context/CartContextProvider";
+import { wishlistContext } from "@/app/_providers/context/WishlistContextProvider";
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
@@ -37,6 +36,7 @@ export function Navbar() {
   const route = useRouter();
 
   const { numOfCartItems } = React.useContext(cartContext);
+  const { numOfWishlistItems } = React.useContext(wishlistContext);
 
   React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -258,6 +258,9 @@ export function Navbar() {
                     href="/wishlist"
                   >
                     <FaRegHeart className="size-6" />
+                    <span className="text-xs absolute top-0 right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                      {numOfWishlistItems > 9 ? "9+" : numOfWishlistItems}
+                    </span>
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>

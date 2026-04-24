@@ -11,6 +11,9 @@ import { getLoggedUserCartAction } from "@/services/actions/cart.action";
 import { HttpResult } from "@/services/utils/http";
 import { CartResponse } from "@/services/types/cart_interface";
 import { getMyToken } from "@/services/utils/helpers/getMyToken";
+import { GetWishlistResponse } from "@/services/types/wishlist_interface";
+import { getWishlistAction } from "@/services/actions/wishlist.action";
+import WishlistContextProvider from "./_providers/context/WishlistContextProvider";
 const exo = Exo({
   variable: "--font-exo",
   subsets: ["latin"],
@@ -29,12 +32,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const response: HttpResult<CartResponse | null> =
+  const cartResponse: HttpResult<CartResponse | null> =
     await getLoggedUserCartAction();
   let userCart = null;
-  if (response.ok) {
-    userCart = response.data;
+  if (cartResponse.ok) {
+    userCart = cartResponse.data;
   }
+
+  const wishlistResponse: HttpResult<GetWishlistResponse | null> =
+    await getWishlistAction();
+  let userWishlist = null;
+  if (wishlistResponse.ok) {
+    userWishlist = wishlistResponse.data;
+  }
+  console.log(wishlistResponse);
 
   const token = await getMyToken();
   console.log(token?.realToken);
@@ -44,12 +55,14 @@ export default async function RootLayout({
       <body>
         {/* Client Boundary Pattern */}
         <MySessionProvider>
-          <CartContextProvider userCart={userCart}>
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster position="top-center" />
-          </CartContextProvider>
+          <WishlistContextProvider userWishlist={userWishlist}>
+            <CartContextProvider userCart={userCart}>
+              <Navbar />
+              {children}
+              <Footer />
+              <Toaster position="top-center" />
+            </CartContextProvider>
+          </WishlistContextProvider>
         </MySessionProvider>
       </body>
     </html>

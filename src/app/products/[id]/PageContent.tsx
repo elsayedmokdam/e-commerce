@@ -7,6 +7,9 @@ import formatPrice from "@/lib/helpers/formatPrice";
 import AddToCartBtn from "@/components/shared/product-card/AddToCartBtn";
 import FeatureCard from "@/components/shared/feature-card/FeatureCard";
 import WishlistToggleBtn from "@/components/shared/product-card/WishlistToggleBtn";
+import { useState } from "react";
+import AppButton from "@/components/shared/app-button/AppButton";
+import AppInput from "@/components/shared/app-input/AppInput";
 
 const featuredCards = [
   {
@@ -52,6 +55,16 @@ export default function PageContent({
       : 0;
 
   const isInWishlist = wishlistIds.includes(productData.id);
+
+  const [quantity, setQuantity] = useState(1);
+  function handleQuantityChange(quantity: number) {
+    if (quantity > 0) {
+      setQuantity(quantity);
+    }
+    if(quantity > productData.quantity) {
+      setQuantity(productData.quantity);
+    }
+  }
 
   return (
     <div className="bg-gray-50 py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8">
@@ -138,14 +151,35 @@ export default function PageContent({
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">Quantity</span>
 
-              <div className="flex items-center border rounded-lg overflow-hidden">
-                <button className="px-4 py-2 text-gray-600">-</button>
-                <span className="px-4">1</span>
-                <button className="px-4 py-2 text-gray-600">+</button>
+              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                <AppButton
+                  onClick={() => handleQuantityChange(quantity - 1)}
+                  disabled={quantity === 1}
+                  className="px-4 py-2 text-gray-600 disabled:opacity-50 bg-transparent hover:bg-gray-100 rounded-md"
+                >
+                  -
+                </AppButton>
+
+                <div className="border-l border-r border-gray-200">
+                  <AppInput
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(+e.target.value)}
+                    className="border-0 text-center focus:ring-0! rounded-none w-19!"
+                  />
+                </div>
+
+                <AppButton
+                  onClick={() => handleQuantityChange(quantity + 1)}
+                  disabled={quantity === productData.quantity}
+                  className="px-4 py-2 text-gray-600 disabled:opacity-50! bg-transparent hover:bg-gray-100 rounded-md"
+                >
+                  +
+                </AppButton>
               </div>
 
               <span className="text-sm text-gray-400">
-                {productData.quantity} available
+                {productData.quantity - quantity} available
               </span>
             </div>
 
@@ -153,7 +187,7 @@ export default function PageContent({
             <div className="bg-gray-100 rounded-lg px-4 py-3 flex justify-between items-center">
               <span className="text-gray-600">Total Price:</span>
               <span className="text-green-600 font-bold text-lg">
-                {formatPrice(productData.price)} EGP
+                {formatPrice(productData.price * quantity)} EGP
               </span>
             </div>
 

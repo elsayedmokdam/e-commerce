@@ -9,6 +9,17 @@ import ProductsList from "@/app/products/ProductsList";
 export default async function page({ params }: any) {
   const { id } = await params;
 
+  // Fetch wishlist
+  const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
+  let wishlistIds: string[] = [];
+  console.log("Wishlist Response", wishlistResponse);
+
+  if (wishlistResponse.ok) {
+    wishlistIds = wishlistResponse.data.data.map(
+      (item: ProductData) => item._id,
+    );
+  }
+
   // Fetch Specific Brand to get its name and image
   const response = await $SERVICE_REPOSITORY.Brands.getSpecificBrand(id);
   if (!response.ok) {
@@ -37,6 +48,7 @@ export default async function page({ params }: any) {
         initialProducts={products}
         currentPage={currentPage}
         totalPages={numberOfPages}
+        wishlistIds={wishlistIds}
       />
     );
   }

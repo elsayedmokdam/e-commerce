@@ -8,7 +8,6 @@ import {
   removeFromWishlistAction,
 } from "@/services/actions/wishlist.action";
 import { notify } from "@/services/utils/helpers/alerts";
-import { cartContext } from "@/app/_providers/context/CartContextProvider";
 import { wishlistContext } from "@/app/_providers/context/WishlistContextProvider";
 
 export default function WishlistToggleBtn({

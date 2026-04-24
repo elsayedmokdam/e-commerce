@@ -45,7 +45,6 @@ export default async function RootLayout({
   if (wishlistResponse.ok) {
     userWishlist = wishlistResponse.data;
   }
-  console.log(wishlistResponse);
 
   const token = await getMyToken();
   console.log(token?.realToken);
@@ -55,7 +54,7 @@ export default async function RootLayout({
       <body>
         {/* Client Boundary Pattern */}
         <MySessionProvider>
-          <WishlistContextProvider userWishlist={userWishlist}>
+          <WishlistContextProvider userWishlistLength={userWishlist?.count}>
             <CartContextProvider userCart={userCart}>
               <Navbar />
               {children}

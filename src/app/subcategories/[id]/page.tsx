@@ -9,6 +9,17 @@ import icon from "@public/allProductsIcon.svg";
 export default async function page({ params }: any) {
   const { id } = await params;
 
+  // Fetch wishlist
+  const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
+  let wishlistIds: string[] = [];
+  console.log("Wishlist Response", wishlistResponse);
+
+  if (wishlistResponse.ok) {
+    wishlistIds = wishlistResponse.data.data.map(
+      (item: ProductData) => item._id,
+    );
+  }
+
   // Fetch All products on a Category:
   async function SubCategoriesContent() {
     const response = await $SERVICE_REPOSITORY.Products.getProducts({
@@ -29,6 +40,7 @@ export default async function page({ params }: any) {
         initialProducts={products}
         currentPage={currentPage}
         totalPages={numberOfPages}
+        wishlistIds={wishlistIds}
       />
     );
   }

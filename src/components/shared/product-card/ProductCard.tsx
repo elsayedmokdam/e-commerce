@@ -12,7 +12,13 @@ import formatPrice from "@/lib/helpers/formatPrice";
 import WishlistToggleBtn from "./WishlistToggleBtn";
 import { FaHeart, FaSpinner } from "react-icons/fa6";
 
-export default function ProductCard({ product, wishlistIds }: { product: ProductData, wishlistIds: string[] }) {
+export default function ProductCard({
+  product,
+  wishlistIds,
+}: {
+  product: ProductData;
+  wishlistIds: string[];
+}) {
   const hasDiscount =
     product.price > 0 &&
     product.priceAfterDiscount !== 0 &&
@@ -26,7 +32,7 @@ export default function ProductCard({ product, wishlistIds }: { product: Product
         )
       : 0;
 
-      console.log(wishlistIds);
+  console.log(wishlistIds);
 
   const isInWishlist = wishlistIds.includes(product.id);
 

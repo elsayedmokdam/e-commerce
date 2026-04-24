@@ -2,12 +2,22 @@ import Link from "next/link";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { ProductData } from "@/services/types/products_interface";
 import ProductCard from "@/components/shared/product-card/ProductCard";
+import $SERVICE_REPOSITORY from "@/services/service.repo";
 
-export default function FeaturedProducts({
+export default async function FeaturedProducts({
   products,
 }: {
   products: ProductData[];
 }) {
+  // Fetch wishlist
+  const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
+  let wishlistIds: string[] = [];
+
+  if (wishlistResponse.ok) {
+    wishlistIds = wishlistResponse.data.data.map(
+      (item: ProductData) => item._id,
+    );
+  }
   return (
     <section className="w-full py-10 lg:py-14 xl:py-18 px-5 md:px-7 lg:px-9">
       <div className="max-w-7xl mx-auto">
@@ -34,7 +44,13 @@ export default function FeaturedProducts({
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {products.map((product) => {
-            return <ProductCard key={product.id} product={product} />;
+            return (
+              <ProductCard
+                key={product.id}
+                product={product}
+                wishlistIds={wishlistIds}
+              />
+            );
           })}
         </div>
       </div>

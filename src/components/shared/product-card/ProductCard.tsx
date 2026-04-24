@@ -1,3 +1,4 @@
+"use client";
 import { ProductData } from "@/services/types/products_interface";
 import Image from "next/image";
 import AppButton from "../app-button/AppButton";
@@ -8,20 +9,27 @@ import AddToCartBtn from "./AddToCartBtn";
 import ViewProductBtn from "./ViewProductBtn";
 import formatTitle from "@/lib/helpers/formatTitle";
 import formatPrice from "@/lib/helpers/formatPrice";
+import WishlistToggleBtn from "./WishlistToggleBtn";
+import { FaHeart, FaSpinner } from "react-icons/fa6";
 
-export default function ProductCard({ product }: { product: ProductData }) {
+export default function ProductCard({ product, wishlistIds }: { product: ProductData, wishlistIds: string[] }) {
   const hasDiscount =
-    product.price > 0 && product.priceAfterDiscount !== 0 &&
+    product.price > 0 &&
+    product.priceAfterDiscount !== 0 &&
     product.priceAfterDiscount !== undefined &&
     product.priceAfterDiscount < product.price;
 
-    // console.log("price after discount", product.priceAfterDiscount, "price", product.price);
-
-    const discountPercentage = hasDiscount && product.priceAfterDiscount
+  const discountPercentage =
+    hasDiscount && product.priceAfterDiscount
       ? Math.round(
           ((product.price - product.priceAfterDiscount) / product.price) * 100,
         )
       : 0;
+
+      console.log(wishlistIds);
+
+  const isInWishlist = wishlistIds.includes(product.id);
+
   return (
     <div className="group bg-white rounded-lg border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden ">
       <Link href={`/products/${product.id}`} className="flex flex-col">
@@ -46,9 +54,26 @@ export default function ProductCard({ product }: { product: ProductData }) {
           {/* Action Icons */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
             <div className="space-y-2 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <AppButton className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer">
-                <FiHeart size={18} className="text-gray-800" />
-              </AppButton>
+              <WishlistToggleBtn
+                productId={product.id}
+                initialState={isInWishlist}
+                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                {({ isInWishlist, isLoading }) => (
+                  <>
+                    {isLoading ? (
+                      <FaSpinner
+                        size={18}
+                        className="text-gray-400 animate-spin"
+                      />
+                    ) : isInWishlist ? (
+                      <FaHeart size={18} className="text-red-500" />
+                    ) : (
+                      <FiHeart size={18} className="text-gray-800" />
+                    )}
+                  </>
+                )}
+              </WishlistToggleBtn>
 
               <ViewProductBtn id={product.id} />
 

@@ -1,7 +1,7 @@
 import { getProductsService } from "./getProducts.service";
-import { getProductByIdService } from "./getProductById.service";
+import { getSpecificProductService } from "./getSpecificProduct.service";
 
 export const ProductsRepo = {
   getProducts: getProductsService,
-  getProductById: getProductByIdService,
+  getSpecificProduct: getSpecificProductService,
 };

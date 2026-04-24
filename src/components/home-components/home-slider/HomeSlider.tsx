@@ -63,7 +63,7 @@ export default function HomeSlider() {
               </h1>
               <div className="flex gap-4">
                 <Link
-                  href="/cart"
+                  href="/products"
                   className="rounded-lg bg-white px-3 md:px-6 py-3 text-md md:text-lg font-semibold text-green-400 shadow-lg hover:bg-white/80 hover:opacity-90 hover:scale-95 transition duration-300"
                 >
                   {slide.button1}

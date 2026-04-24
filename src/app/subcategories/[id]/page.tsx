@@ -1,42 +1,53 @@
-"use client";
+import PageHeader from "@/components/shared/page-header/PageHeader";
+import $SERVICE_REPOSITORY from "@/services/service.repo";
+import { Suspense } from "react";
+import { ProductData } from "@/services/types/products_interface";
+import ProductsList from "@/app/products/ProductsList";
+import ProductsLoading from "@/app/products/loading";
+import icon from "@public/allProductsIcon.svg";
 
-import { use } from "react";
+export default async function page({ params }: any) {
+  const { id } = await params;
 
-export default function SubcategoryDetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
+  // Fetch All products on a Category:
+  async function SubCategoriesContent() {
+    const response = await $SERVICE_REPOSITORY.Products.getProducts({
+      limit: "15",
+      page: "1",
+      category: id,
+    });
+
+    if (!response.ok) {
+      throw new Error(response.error.message);
+    }
+
+    const products: ProductData[] = response.data.data;
+    const currentPage = response.data.metadata.currentPage;
+    const numberOfPages = response.data.metadata.numberOfPages;
+    return (
+      <ProductsList
+        initialProducts={products}
+        currentPage={currentPage}
+        totalPages={numberOfPages}
+      />
+    );
+  }
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Subcategory {id}
-        </h1>
-        <p className="mt-4 text-gray-500">
-          Browsing products in this specific subcategory.
-        </p>
+    <>
+      {/* Header of the page */}
+      <PageHeader
+        bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
+        icon={icon.src}
+        title="All Products"
+        pageName={[{ name: "Products", href: "/products" }]}
+        subtitle="Explore our complete product collection"
+        iconBgColor="from-[#16A34A] to-[#4ADE80]"
+      />
 
-        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          <div className="group relative">
-            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-            </div>
-            <div className="mt-4 flex justify-between">
-              <div>
-                <h3 className="text-sm text-gray-700">
-                  <a href="/products/1">
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    Laptop Pro
-                  </a>
-                </h3>
-              </div>
-              <p className="text-sm font-medium text-gray-900">$1200</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <Suspense fallback={<ProductsLoading />}>
+        <SubCategoriesContent />
+      </Suspense>
+    </>
   );
 }

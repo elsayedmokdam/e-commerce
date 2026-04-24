@@ -23,8 +23,8 @@ export interface ProductData {
   quantity: number;
   price: number;
   imageCover: string;
-  category: CategoryData;
-  brand: BrandData;
+  category: Category;
+  brand: Brand;
   ratingsAverage: number;
   createdAt: string;
   updatedAt: string;
@@ -40,16 +40,38 @@ export interface Subcategory {
   category: string;
 }
 
-export interface CategoryData {
+export interface Category {
   _id: string;
   name: string;
   slug: string;
   image: string;
 }
 
-export interface BrandData {
+export interface Brand {
   _id: string;
   name: string;
   slug: string;
   image: string;
+}
+
+// Specific Product
+
+export interface SpecificProductResponse {
+  data: ProductData;
+}
+
+export interface Review {
+  _id: string;
+  rating: number;
+  review: string;
+  product: string;
+  user: User;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface User {
+  _id: string;
+  name: string;
 }

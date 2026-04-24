@@ -1,6 +1,44 @@
+import PageHeader from "@/components/shared/page-header/PageHeader";
+import PageContent from "./PageContent";
+import $SERVICE_REPOSITORY from "@/services/service.repo";
+import { ProductData } from "@/services/types/products_interface";
 
-export default function page() {
+export default async function page({ params }: any) {
+  const { id } = await params;
+
+  // Fetch specific product to get its details
+  const response = await $SERVICE_REPOSITORY.Products.getSpecificProduct(id);
+  if (!response.ok) {
+    throw new Error(response.error.message);
+  }
+
+  const productData: ProductData = response.data.data;
+
+  const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
+  let wishlistIds: string[] = [];
+
+  if (wishlistResponse.ok) {
+    wishlistIds = wishlistResponse.data.data.map(
+      (item: ProductData) => item._id,
+    );
+  }
+
   return (
-    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, nesciunt beatae quaerat dolores laboriosam praesentium ipsa fuga deserunt, necessitatibus ex qui voluptatibus porro veritatis! Ex consequuntur voluptates voluptatibus deleniti, molestiae facere quasi nobis dolores asperiores expedita temporibus explicabo, dolorum a incidunt magni tempora blanditiis tenetur sint, laboriosam veritatis repellat est nisi accusantium? In error culpa nemo cum eum perspiciatis explicabo? At eius deserunt, dolore hic modi explicabo ab! Commodi fugit natus cum voluptatem provident impedit quos deserunt sint est at expedita ex modi vel ratione odio distinctio sunt, adipisci aperiam atque a rem. Odio libero eligendi quo corporis cupiditate reprehenderit?</div>
-  )
+    <>
+      {/* Header of the page */}
+      <PageHeader
+        bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
+        icon={productData.imageCover}
+        title={productData.title}
+        pageName={[
+          { name: "Products", href: "/products" },
+          { name: productData.title, href: "" },
+        ]}
+        subtitle="Check out our complete product collection"
+        iconBgColor="from-[#16A34A] to-[#4ADE80]"
+      />
+      {/* Product Details */}
+      <PageContent productData={productData} wishlistIds={wishlistIds} />
+    </>
+  );
 }

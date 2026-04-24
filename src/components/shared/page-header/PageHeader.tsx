@@ -50,7 +50,7 @@ export default function PageHeader({
         <div
           className={`size-17 rounded-2xl text-white text-3xl flex items-center justify-center shadow-lg border border-white/20 ${iconBgColor}`}
         >
-          {typeof icon === "string" ? <img src={icon} alt={title} /> : icon}
+          {typeof icon === "string" ? <img src={icon} className="w-14 h-14 rounded-2xl" alt={title} /> : icon}
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-4xl font-bold text-white">{title}</h1>

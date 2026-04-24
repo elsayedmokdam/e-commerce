@@ -1,7 +1,7 @@
-import { getSubcategoriesService } from "./getSubcategories.service";
+import { getAllSubcategoriesOnCategService } from "./getAllSubcategoriesOnCateg.service";
 import { getSubcategoryByIdService } from "./getSubcategoryById.service";
 
 export const SubcategoriesRepo = {
-  getSubcategories: getSubcategoriesService,
+  getAllSubcategoriesOnCateg: getAllSubcategoriesOnCategService,
   getSubcategoryById: getSubcategoryByIdService,
 };

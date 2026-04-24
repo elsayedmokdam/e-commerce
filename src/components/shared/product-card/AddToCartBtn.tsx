@@ -32,7 +32,7 @@ export default function AddToCartBtn({ productId }: { productId: string }) {
     <AppButton
       type="button"
       loading={loading}
-      className="w-full text-xs md:text-sm bg-main-color hover:bg-main-color/80 transition-colors text-white rounded-full py-2 md:py-3"
+      className="w-full text-xs md:text-sm bg-main-color hover:bg-main-color/80 transition-colors text-white rounded-md py-2 md:py-3"
       onClick={() => handleAddToCart(productId)}
     >
       {loading ? (

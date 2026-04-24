@@ -108,6 +108,9 @@ export default function SigninForm() {
 
     notify.success("Signin successful!");
     router.push("/");
+
+    // After the update in nextAuth 
+    // signIn("credentials", {...data, redirectTo: "/"});
   }
 
   return (

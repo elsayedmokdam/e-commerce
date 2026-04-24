@@ -12,7 +12,7 @@ export interface AppInputProps extends InputHTMLAttributes<HTMLInputElement> {
   /**
    * @description The icon of the input
    */
-  icon?: React.ReactNode;
+  icon?: React.ReactNode | string | any;
 
   /**
    * @description The position of the icon

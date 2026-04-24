@@ -1,11 +1,18 @@
 import { BASE_URL } from "../config";
-import { http } from "../utils/http";
+import { AddRemoveWishlistResponse } from "../types/wishlist_interface";
+import { getMyToken } from "../utils/helpers/getMyToken";
+import { httpClient, HttpResult } from "../utils/http";
 
 export const ROUTE_URL = "/api/v1/wishlist";
 
-export const addToWishlistService = async (payload: { productId: string }): Promise<any> => {
-  return http(`${BASE_URL}${ROUTE_URL}`, {
-    method: "POST",
-    body: JSON.stringify(payload),
+export const addToWishlistService = async (
+  payload: any,
+): Promise<HttpResult<AddRemoveWishlistResponse>> => {
+  const decoded = await getMyToken();
+  const token = decoded?.realToken;
+
+  return httpClient.post(`${BASE_URL}${ROUTE_URL}`, payload, {
+    requiredAuthToken: true,
+    token,
   });
 };

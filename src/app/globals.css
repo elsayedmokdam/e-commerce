@@ -142,3 +142,32 @@
     display: none!important;
   }
 }
+
+
+.custom-pagination {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.custom-pagination .swiper-pagination-bullet {
+  width: auto;
+  height: auto;
+  opacity: 1;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.custom-pagination::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-pagination img {
+  transition: 0.3s;
+}
+
+.custom-pagination .swiper-pagination-bullet-active img {
+  border: 2px solid #22c55e; 
+  transform: scale(1.05);
+}

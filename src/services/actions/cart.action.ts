@@ -12,7 +12,7 @@ export async function addToCartAction(productId: {
   return response;
 }
 
-export async function getLogedUserCartAction(): Promise<
+export async function getLoggedUserCartAction(): Promise<
   HttpResult<CartResponse>
 > {
   const response: HttpResult<CartResponse> =

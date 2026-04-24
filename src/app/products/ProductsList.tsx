@@ -5,20 +5,22 @@ import ProductCard from "@/components/shared/product-card/ProductCard";
 import { ProductData } from "@/services/types/products_interface";
 import { FiAlertCircle } from "react-icons/fi";
 import $SERVICE_REPOSITORY from "@/services/service.repo";
-import AppButton from "@/components/shared/app-button/AppButton";
-import { FaSpinner } from "react-icons/fa6";
 import { notify } from "@/services/utils/helpers/alerts";
+import Link from "next/link";
+import PaginationStatus from "@/components/shared/pagination-status/PaginationStatus";
 
 interface ProductsListProps {
   initialProducts: ProductData[];
   totalPages: number;
   currentPage: number;
+  wishlistIds: string[];
 }
 
 export function ProductsList({
   initialProducts,
   totalPages,
   currentPage,
+  wishlistIds,
 }: ProductsListProps) {
   const [products, setProducts] = useState<ProductData[]>(initialProducts);
   const [currentPageNum, setCurrentPageNum] = useState(currentPage);
@@ -65,12 +67,12 @@ export function ProductsList({
               We couldn't find any products at the moment. Please try again
               later or explore our other categories.
             </p>
-            <a
+            <Link
               href="/"
               className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
               Back to Home
-            </a>
+            </Link>
           </div>
         ) : (
           <div>
@@ -80,47 +82,21 @@ export function ProductsList({
             {/* Product List */}
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} wishlistIds={wishlistIds} />
               ))}
             </div>
 
             {/* Pagination Controls */}
-            <div className="mt-12 flex flex-col items-center gap-4">
-              {hasError && (
-                <p className="text-red-500 text-sm font-medium">
-                  Error loading more products. Please try again.
-                </p>
-              )}
-
-              {hasMorePages && (
-                <AppButton
-                  onClick={handleLoadMore}
-                  disabled={isLoading}
-                  className="px-8 py-6 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-                >
-                  {isLoading ? (
-                    <div className="flex items-center gap-2">
-                      <span>
-                        <FaSpinner className="animate-spin" />
-                      </span>
-                      <span>Loading</span>
-                    </div>
-                  ) : (
-                    "Load More Products"
-                  )}
-                </AppButton>
-              )}
-
-              {!hasMorePages && products.length > 0 && (
-                <p className="text-gray-500 text-center mt-4">
-                  You've reached the end of our product list.
-                </p>
-              )}
-
-              <p className="text-sm text-gray-400 mt-2">
-                Page {currentPageNum} of {totalPages}
-              </p>
-            </div>
+            <PaginationStatus
+              hasMorePages={hasMorePages}
+              currentPageNum={currentPageNum}
+              totalPages={totalPages}
+              isLoading={isLoading}
+              hasError={hasError}
+              handleLoadMore={handleLoadMore}
+              itemsCount={products.length}
+              errorMessage="Failed to load more products. Please try again."
+            />
           </div>
         )}
       </div>

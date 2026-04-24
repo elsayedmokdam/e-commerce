@@ -1,5 +1,5 @@
 export interface SigninResponse {
-  message: string;
+  message: "success" | "incorrect email or password";
   user: User;
   token: string;
 }

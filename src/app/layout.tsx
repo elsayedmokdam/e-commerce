@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer/Footer";
 import { Toaster } from "react-hot-toast";
 import MySessionProvider from "./_providers/MySessionProvider";
 import CartContextProvider from "./_providers/context/CartContextProvider";
-import { getLogedUserCartAction } from "@/services/actions/cart.action";
+import { getLoggedUserCartAction } from "@/services/actions/cart.action";
 import { HttpResult } from "@/services/utils/http";
 import { CartResponse } from "@/services/types/cart_interface";
 import { getMyToken } from "@/services/utils/helpers/getMyToken";
@@ -30,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const response: HttpResult<CartResponse | null> =
-    await getLogedUserCartAction();
+    await getLoggedUserCartAction();
   let userCart = null;
   if (response.ok) {
     userCart = response.data;

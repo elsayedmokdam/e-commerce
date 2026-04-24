@@ -23,40 +23,31 @@ export default function AppInput({
 
   return (
     <Field>
-      {label && <FieldLabel>{label}</FieldLabel>}
+      {label && <FieldLabel className="mb-2">{label}</FieldLabel>}
 
       <InputGroup
-        className={`bg-white w-full border border-gray-300 py-6 px-2 ${className}`}
+        className={`bg-white w-full border py-6 px-2 border-gray-300 ${className}`}
       >
         {icon && align === "start" && (
-          <InputGroupAddon
-            align="inline-start"
-            className={iconClassName}
-          >
+          <InputGroupAddon align="inline-start" className={iconClassName}>
             {icon}
           </InputGroupAddon>
         )}
 
         <InputGroupInput
           placeholder={placeholder}
-          className="placeholder:text-gray-400 text-sm"
+          className="placeholder:text-gray-400 text-sm py-6 px-2"
           {...rest}
         />
 
         {icon && align === "end" && (
-          <InputGroupAddon
-            align="inline-end"
-            className={iconClassName}
-          >
+          <InputGroupAddon align="inline-end" className={iconClassName}>
             {icon}
           </InputGroupAddon>
         )}
 
         {endIcon && (
-          <InputGroupAddon
-            align="inline-end"
-            className={endIconClassName}
-          >
+          <InputGroupAddon align="inline-end" className={endIconClassName}>
             {endIcon}
           </InputGroupAddon>
         )}

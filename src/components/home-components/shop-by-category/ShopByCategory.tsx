@@ -1,7 +1,6 @@
 import { FaArrowRightLong } from "react-icons/fa6";
 import Link from "next/link";
 import { CategoryData } from "@/services/types/categories_interface";
-import Image from "next/image";
 import CategoryCard from "@/components/shared/category-card/CategoryCard";
 
 const promoCards: PromoCard[] = [
@@ -112,7 +111,7 @@ export default function ShopByCategory({
                   </p>
                 </div>
                 <Link
-                  href="/categories"
+                  href="/products"
                   className={`w-fit flex items-center gap-2 rounded-full bg-white px-6 py-2 text-xs font-semibold ${promo.buttonColor} transition-all duration-300 hover:bg-gray-100 hover:shadow-md md:px-8 md:py-3 md:text-sm lg:px-10 lg:py-4 lg:text-base`}
                 >
                   {promo.buttonText}

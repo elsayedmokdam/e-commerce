@@ -199,20 +199,19 @@ export function Navbar() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {/* Categories and subcategories */}
+              {/* Categories  */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="hover:text-main-color">
-                  Categories
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="w-60 text-gray-800 font-semibold">
-                    <ListItem href="/categories">All Categoties</ListItem>
-                    <ListItem href="/categories/2">Electronics</ListItem>
-                    <ListItem href="/categories/3">
-                      Category 3 description
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link
+                    className="hover:bg-transparent hover:text-main-color focus:bg-transparent focus:font-bold focus:text-main-color text-lg"
+                    href="/categories"
+                  >
+                    Categories
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
 
               {/* Brands */}

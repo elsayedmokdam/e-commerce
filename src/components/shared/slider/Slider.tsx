@@ -18,13 +18,24 @@ interface SliderProps {
   autoplay?: boolean | { delay: number; disableOnInteraction?: boolean };
   loop?: boolean;
   navigation?: boolean;
-  pagination?: { clickable?: boolean; type?: "bullets" | "fraction" | "progressbar", bulletActiveClass?: string, renderBullet?: (index: number, className: string) => string } | boolean;
-  breakpoints?: Record<number, { slidesPerView: number; spaceBetween?: number }>;
+  pagination?:
+    | {
+        clickable?: boolean;
+        type?: "bullets" | "fraction" | "progressbar";
+        bulletActiveClass?: string;
+        renderBullet?: (index: number, className: string) => string;
+      }
+    | boolean;
+  breakpoints?: Record<
+    number,
+    { slidesPerView: number; spaceBetween?: number }
+  >;
   className?: string;
   slideClassName?: string;
   imageClassName?: string;
   onSlideChange?: (swiper: any) => void;
   onSwiper?: (swiper: any) => void;
+  renderBullet?: (index: number, className: string) => string;
 }
 
 export default function Slider({
@@ -43,24 +54,29 @@ export default function Slider({
   imageClassName = "w-full h-120 object-cover",
   onSlideChange,
   onSwiper,
+  renderBullet,
 }: SliderProps) {
-  const slides = children || imageList.map((image, index) => (
-    <img
-      key={image}
-      src={image}
-      className={imageClassName}
-      alt={`Slide ${index + 1}`}
-    />
-  ));
+  const slides =
+    children ||
+    imageList.map((image, index) => (
+      <img
+        key={image}
+        src={image}
+        className={imageClassName}
+        alt={`Slide ${index + 1}`}
+      />
+    ));
 
   // Handle renderBullet with image URLs
-  const paginationConfig = typeof pagination === "object" && pagination.renderBullet === undefined && bulletImages.length > 0
-    ? {
-        ...pagination,
-        renderBullet: (index: number, className: string) => 
-          `<img src="${bulletImages[index]}" class="${className} w-30! h-30! object-cover rounded-full opacity-50 cursor-pointer" />`
-      }
-    : pagination;
+  const paginationConfig =
+    typeof pagination === "object" &&
+    pagination.renderBullet === undefined &&
+    bulletImages.length > 0
+      ? {
+          ...pagination,
+          renderBullet,
+        }
+      : pagination;
 
   return (
     <Swiper
@@ -70,7 +86,11 @@ export default function Slider({
       autoplay={autoplay}
       loop={loop}
       navigation={navigation}
-      pagination={paginationConfig}
+      pagination={{
+        ...(paginationConfig as object),
+        el: ".custom-pagination",
+        clickable: true,
+      }}
       breakpoints={breakpoints}
       onSlideChange={onSlideChange}
       onSwiper={onSwiper}

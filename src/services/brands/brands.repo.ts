@@ -1,7 +1,7 @@
-import { getBrandsService } from "./getBrands.service";
-import { getBrandByIdService } from "./getBrandById.service";
+import { getAllBrandsService } from "./getAllBrands.service";
+import { getSpecificBrandService } from "./getSpecificBrand.service";
 
 export const BrandsRepo = {
-  getBrands: getBrandsService,
-  getBrandById: getBrandByIdService,
+  getAllBrands: getAllBrandsService,
+  getSpecificBrand: getSpecificBrandService,
 };

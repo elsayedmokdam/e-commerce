@@ -1,9 +1,9 @@
 import { getCategoriesService } from "./getCategories.service";
-import { getCategoryByIdService } from "./getCategoryById.service";
 import { getCategorySubcategoriesService } from "./getCategorySubcategories.service";
+import { getSpecificCategoryService } from "./getSpecificCategory.service";
 
 export const CategoriesRepo = {
   getCategories: getCategoriesService,
-  getCategoryById: getCategoryByIdService,
+  getSpecificCategory: getSpecificCategoryService,
   getCategorySubcategories: getCategorySubcategoriesService,
 };

@@ -6,33 +6,44 @@ import icon from "@public/allProductsIcon.svg";
 import ProductsLoading from "./loading";
 import ProductsList from "./ProductsList";
 
-// Fetch all products
-async function ProductsContent() {
-  const response = await $SERVICE_REPOSITORY.Products.getProducts({
-    limit: "15",
-    page: "1",
-  });
+export const dynamic = "force-dynamic";
 
-  if (!response.ok) {
-    throw new Error(response.error.message);
+export default async function page() {
+  // Fetch wishlist
+  const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
+  let wishlistIds: string[] = [];
+
+  if (wishlistResponse.ok) {
+    wishlistIds = wishlistResponse.data.data.map(
+      (item: ProductData) => item._id,
+    );
   }
 
-  const products: ProductData[] = response.data.data;
-  const currentPage = response.data.metadata.currentPage;
-  const numberOfPages = response.data.metadata.numberOfPages;
+  // Fetch all products
+  async function ProductsContent() {
+    const response = await $SERVICE_REPOSITORY.Products.getProducts({
+      limit: "15",
+      page: "1",
+    });
 
-  return (
-    <ProductsList
-      initialProducts={products}
-      currentPage={currentPage}
-      totalPages={numberOfPages}
-    />
-  );
-}
+    if (!response.ok) {
+      throw new Error(response.error.message);
+    }
 
-export const dynamic = 'force-dynamic';
+    const products: ProductData[] = response.data.data;
+    const currentPage = response.data.metadata.currentPage;
+    const numberOfPages = response.data.metadata.numberOfPages;
 
-export default function page() {
+    return (
+      <ProductsList
+        initialProducts={products}
+        currentPage={currentPage}
+        totalPages={numberOfPages}
+        wishlistIds={wishlistIds}
+      />
+    );
+  }
+
   return (
     <>
       {/* Header of the page */}

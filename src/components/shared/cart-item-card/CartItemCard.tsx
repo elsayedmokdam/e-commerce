@@ -113,7 +113,7 @@ export function CartItemCard({ product }: { product: Product }) {
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Image */}
         <Link
-          href={`/products/${_id}`}
+          href={`/products/${productId}`}
           className="w-full h-70 sm:w-28 sm:h-28 shrink-0 flex items-center justify-center"
         >
           <img
@@ -128,7 +128,7 @@ export function CartItemCard({ product }: { product: Product }) {
           {/* Top */}
           <div>
             <Link
-              href={`/products/${_id}`}
+              href={`/products/${productId}`}
               className="font-semibold text-sm sm:text-base hover:text-green-700 transition"
             >
               {formatTitle(title, 30)}
@@ -139,7 +139,9 @@ export function CartItemCard({ product }: { product: Product }) {
             </p>
 
             <p className="mt-2 text-sm">
-              <span className="font-bold text-green-600">{formatPrice(price)} EGP</span>{" "}
+              <span className="font-bold text-green-600">
+                {formatPrice(price)} EGP
+              </span>{" "}
               <span className="text-gray-400 text-xs">per unit</span>
             </p>
           </div>

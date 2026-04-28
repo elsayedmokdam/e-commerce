@@ -1,4 +1,5 @@
 import CategoryCard from "@/components/shared/category-card/CategoryCard";
+import IsEmpty from "@/components/shared/is-empty/IsEmpty";
 import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { CategoryData } from "@/services/types/categories_interface";
 import { FiAlertCircle } from "react-icons/fi";
@@ -20,23 +21,18 @@ export default async function CategoriesList() {
   return (
     <section className="min-h-[60vh] py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {!categories || categories.length === 0 ? (
-          <div className="my-12 flex flex-col items-center justify-center py-20">
-            <FiAlertCircle size={64} className="text-gray-300 mb-6" />
-            <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-              No Categories Found
-            </h3>
-            <p className="text-gray-500 text-center font-medium max-w-md mb-6">
-              We couldn't find any categories at the moment. Please try again
-              later or explore our other categories.
-            </p>
-            <a
-              href="/"
-              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-            >
-              Back to Home
-            </a>
-          </div>
+        {categories.length === 0  ? (
+          <IsEmpty
+            icon={<FiAlertCircle size={64} className="text-gray-300" />}
+            title="No categories found."
+            description="We couldn't find any categories. Please try again later."
+            links={[
+              {
+                label: "Back to Home",
+                href: "/",
+              },
+            ]}
+          />
         ) : (
           <div>
             <p className="text-gray-500 text-md font-medium text-center lg:text-start mb-6">
@@ -53,6 +49,3 @@ export default async function CategoriesList() {
     </section>
   );
 }
-
-
-

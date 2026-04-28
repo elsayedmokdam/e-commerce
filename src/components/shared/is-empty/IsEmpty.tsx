@@ -2,18 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowRight, FaCartShopping } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 interface IsEmptyProps {
   icon: string | React.ReactNode | any;
   title: string;
   description: string;
-  links: [
-    {
-      label: string;
-      href: string;
-    },
-  ];
+  links: {
+    label: string;
+    href: string;
+  }[];
 }
 
 export default function IsEmpty({
@@ -23,33 +21,46 @@ export default function IsEmpty({
   links,
 }: IsEmptyProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center">
-      <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mb-6">
+    <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
+      {/* Icon */}
+      <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6">
         {typeof icon === "string" ? (
-          <img src={icon} alt={title} className="w-10 h-10" />
+          <img src={icon} alt={title} className="w-12 h-12 object-contain" />
         ) : icon?.src ? (
-          <Image src={icon} alt={title} width={40} height={40} />
+          <Image src={icon} alt={title} width={48} height={48} />
         ) : (
-          icon
+          <div className="text-4xl">{icon}</div>
         )}
       </div>
 
-      <h2 className="text-2xl font-bold mb-2">{title}</h2>
+      {/* Title */}
+      <h2 className="text-3xl font-bold md:text-4xl italic text-gray-700 mb-3">{title}</h2>
 
-      <p className="text-gray-500 mb-6 max-w-md font-medium">{description}</p>
+      {/* Description */}
+      <p className="text-gray-500 font-semibold mb-8 max-w-md lead">
+        {description}
+      </p>
 
-      {links.map((link) => (
-        <Link
-          key={link.label}
-          href={link.href}
-          className="group flex items-center gap-2 text-sm font-semibold px-6 py-3 bg-main-color text-white rounded-lg hover:bg-main-color/80 transition-colors"
-        >
-          <span>{link.label}</span>
-          <span className="group-hover:translate-x-1 transition-transform">
-            <FaArrowRight />
-          </span>
-        </Link>
-      ))}
+      {/* Actions */}
+      <div className="flex flex-wrap gap-3 justify-center">
+        {links.map((link, index) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className={`
+              group flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all
+              ${
+                index === 0
+                  ? "bg-main-color text-white hover:bg-main-color/90 shadow-md"
+                  : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+              }
+            `}
+          >
+            <span>{link.label}</span>
+            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

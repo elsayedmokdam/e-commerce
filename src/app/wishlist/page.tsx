@@ -23,7 +23,7 @@ export default async function page() {
         iconBgColor="from-[#ec008c] to-[#fc6767]"
       />
       <div></div>
-      {false? (
+      {wishlist.length > 0 ? (
         <WishlistTable wishlist={wishlist} />
       ) : (
         <IsEmpty

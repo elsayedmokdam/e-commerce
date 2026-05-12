@@ -16,6 +16,7 @@ import { SignupData } from "@/services/types/signup_interface";
 import { SignupUserAction } from "../../services/actions/signup.action";
 import { useRouter } from "next/navigation";
 import { notify } from "@/services/utils/helpers/alerts";
+import { signIn } from "next-auth/react";
 
 const fields: FormField[] = [
   {
@@ -110,6 +111,11 @@ export default function SignupForm() {
       );
     }
   }
+
+  function handleSigninWithOAuth(provider: string) {
+      signIn(provider.toLowerCase(), { callbackUrl: "/" });
+    }
+  
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -117,6 +123,7 @@ export default function SignupForm() {
           <AppButton
             key={button.label}
             type="button"
+            onClick={() => handleSigninWithOAuth(button.label)}
             className="flex items-center justify-center gap-2 border border-gray-300 bg-white text-sm text-gray-600 hover:bg-slate-50 transition duration-200 w-full py-5 rounded-xl"
           >
             {button.icon}

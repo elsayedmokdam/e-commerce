@@ -1,7 +1,7 @@
 import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
+import Google from "next-auth/providers/google";
 
 export const nextAuthConfig: NextAuthOptions = {
   providers: [
@@ -26,7 +26,12 @@ export const nextAuthConfig: NextAuthOptions = {
 
         const response = await $SERVICE_REPOSITORY.Auth.signin(credentials);
 
-        if (response.ok && response.data.message === "success" && response.data.user && response.data.token) {
+        if (
+          response.ok &&
+          response.data.message === "success" &&
+          response.data.user &&
+          response.data.token
+        ) {
           // Return user object with necessary properties for session.
           // This object + secret key will be used to generate the JWT token for the session.
           return {
@@ -38,6 +43,11 @@ export const nextAuthConfig: NextAuthOptions = {
         }
         return null;
       },
+    }),
+
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
 
@@ -73,7 +83,7 @@ export const nextAuthConfig: NextAuthOptions = {
           session.realToken = token.realToken;
         }
       }
-    //  console.log("Session callback called with session:", session, "and token:", token);
+      //  console.log("Session callback called with session:", session, "and token:", token);
       return session;
     },
   },

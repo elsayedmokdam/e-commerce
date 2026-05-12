@@ -1,5 +1,4 @@
-import { BASE_URL } from "../config";
-import { httpClient, HttpResult } from "../utils/http";
+import { HttpResult } from "../utils/http";
 import { SigninResponse } from "../types/signin_interface";
 import { SignupResponse } from "../types/signup_interface";
 import { signinService } from "./signin.service";
@@ -11,27 +10,26 @@ import { signupService } from "./signup.service";
  * @param {OAuthSigninData} payload - OAuth provider data
  * @returns {Promise<HttpResult<SigninResponse | SignupResponse>>} - A Promise resolving to the API response with token
  */
-export const oauthSigninService = async (
+export const oauthService = async (
   payload: OAuthSigninData,
 ): Promise<HttpResult<SigninResponse | SignupResponse>> => {
-  // Generate a random password for OAuth users (they won't use it)
-  const randomPassword = Math.random().toString(36).slice(-12);
 
   // Try to signup the user first (this will create new account or fail if exists)
   try {
     const signupResponse = await signupService({
       name: payload.name,
       email: payload.email,
-      password: randomPassword,
-      rePassword: randomPassword,
+      password: "Khaled#123",
+      rePassword: "Khaled#123",
       phone: "", // OAuth users can add phone later
     });
 
     if (signupResponse.ok) {
+        console.log("OAuth signup successful:", signupResponse);
       return signupResponse;
     }
   } catch (error) {
-    console.error("OAuth signup attempt failed:", error);
+    console.log("OAuth signup attempt failed:", error);
   }
 
   // If signup fails (user likely exists), try signin with the generated password
@@ -39,14 +37,15 @@ export const oauthSigninService = async (
   try {
     const signinResponse = await signinService({
       email: payload.email,
-      password: randomPassword,
+      password: "Khaled#123",
     });
 
     if (signinResponse.ok) {
+      console.log("OAuth signin successful:", signinResponse);
       return signinResponse;
     }
   } catch (error) {
-    console.error("OAuth signin attempt failed:", error);
+    console.log("OAuth signin attempt failed:", error);
   }
 
   // If both fail, return error response

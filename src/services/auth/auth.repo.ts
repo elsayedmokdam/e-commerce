@@ -4,7 +4,7 @@ import { verifyTokenService } from "./verifyToken.service";
 import { signupService } from "./signup.service";
 import { signinService } from "./signin.service";
 import { forgotPasswordsService } from "./forgotPasswords.service";
-import { oauthSigninService } from "./oauthSignin.service";
+import { oauthService } from "./oauthSignin.service";
 
 export const AuthRepo = {
   verifyResetCode: verifyResetCodeService,
@@ -13,5 +13,5 @@ export const AuthRepo = {
   signup: signupService,
   signin: signinService,
   forgotPasswords: forgotPasswordsService,
-  oauthSignin: oauthSigninService,
+  oauth: oauthService,
 };

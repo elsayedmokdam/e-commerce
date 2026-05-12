@@ -21,46 +21,55 @@ export default function IsEmpty({
   links,
 }: IsEmptyProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
-      {/* Icon */}
-      <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6">
-        {typeof icon === "string" ? (
-          <img src={icon} alt={title} className="w-12 h-12 object-contain" />
-        ) : icon?.src ? (
-          <Image src={icon} alt={title} width={48} height={48} />
-        ) : (
-          <div className="text-4xl">{icon}</div>
-        )}
+    <section className="w-full flex items-center justify-center px-4 py-20 md:py-28">
+      <div className="max-w-xl w-full flex flex-col items-center text-center">
+        {/* Icon */}
+        <div className="w-28 h-28 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center shadow-sm mb-8">
+          {typeof icon === "string" ? (
+            // If it's a string, treat it as an image URL
+            <img src={icon} alt={title} className="w-14 h-14 object-contain text-gray-500" />
+            // If it's a imported image or a React component
+          ) : icon?.src ? (
+            <Image src={icon} alt={title} width={56} height={56} className="w-14 h-14 object-contain text-gray-500" />
+            // Otherwise, render it directly (for React components or icons)
+          ) : (
+            <div className="text-5xl text-gray-500">{icon}</div>
+          )}
+        </div>
+
+        {/* Title */}
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          {title}
+        </h2>
+
+        {/* Description */}
+        <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-md mb-10">
+          {description}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          {links.map((link, index) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`
+                group flex items-center gap-2 rounded-xl px-6 py-3
+                text-sm md:text-base font-semibold transition-all duration-300
+                ${
+                  index === 0
+                    ? "bg-main-color text-white hover:scale-[1.03] hover:shadow-lg"
+                    : "border border-gray-300 bg-white text-gray-700 hover:border-main-color hover:text-main-color"
+                }
+              `}
+            >
+              <span>{link.label}</span>
+
+              <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          ))}
+        </div>
       </div>
-
-      {/* Title */}
-      <h2 className="text-3xl font-bold md:text-4xl italic text-gray-700 mb-3">{title}</h2>
-
-      {/* Description */}
-      <p className="text-gray-500 font-semibold mb-8 max-w-md lead">
-        {description}
-      </p>
-
-      {/* Actions */}
-      <div className="flex flex-wrap gap-3 justify-center">
-        {links.map((link, index) => (
-          <Link
-            key={link.label}
-            href={link.href}
-            className={`
-              group flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all
-              ${
-                index === 0
-                  ? "bg-main-color text-white hover:bg-main-color/90 shadow-md"
-                  : "border border-gray-300 text-gray-700 hover:bg-gray-100"
-              }
-            `}
-          >
-            <span>{link.label}</span>
-            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-          </Link>
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }

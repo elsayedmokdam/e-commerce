@@ -3,15 +3,12 @@ import { FaHeart } from "react-icons/fa6";
 import WishlistTable from "./WishlistTable";
 import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { FiAlertCircle } from "react-icons/fi";
-import Link from "next/link";
 import IsEmpty from "@/components/shared/is-empty/IsEmpty";
 
 export default async function page() {
   const response = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
-  if (!response.ok) {
-    throw new Error(response.error.message);
-  }
-  const wishlist = response.data.data;
+  
+  const wishlist = response.ok ? response.data.data : [];
   return (
     <>
       <PageHeader

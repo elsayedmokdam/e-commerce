@@ -2,7 +2,6 @@ import AppButton from "@/components/shared/app-button/AppButton";
 import { CartItemCard } from "@/components/shared/cart-item-card/CartItemCard";
 import IsEmpty from "@/components/shared/is-empty/IsEmpty";
 import { OrderSummary } from "@/components/shared/order-summary/OrderSummary";
-import icon from "@public/allProductsIcon.svg";
 import Link from "next/link";
 import { useContext } from "react";
 import { BsArrowLeft } from "react-icons/bs";
@@ -10,6 +9,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { cartContext } from "../_providers/context/CartContextProvider";
 import { clearCartAction } from "@/services/actions/cart.action";
 import { notify } from "@/services/utils/helpers/alerts";
+import { MdRemoveShoppingCart } from "react-icons/md";
 
 export default function CartItemsList({
   products,
@@ -66,7 +66,7 @@ export default function CartItemsList({
       <div className="max-w-7xl mx-auto">
         {numOfCartItems === 0 ? (
           <IsEmpty
-            icon={icon}
+            icon={<MdRemoveShoppingCart size={64} className="text-gray-300" />}
             title="Your cart is empty"
             description="Looks like you haven't added anything to your cart yet. Start exploring our products!"
             links={[

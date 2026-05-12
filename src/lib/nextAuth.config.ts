@@ -68,12 +68,18 @@ export const nextAuthConfig: NextAuthOptions = {
 
   callbacks: {
     // This function is called in each successful authentication and in each navigation.
-    // You can use it to persist additional data in the token, such as the real token from your API.
-    async jwt({ token, user }) {
-      // Add the real token from the user object(sent from the authorize function) to the JWT token, so it can be accessed in the session callback and on the server side.
-      if (user && "realToken" in user) {
+    // You can use it to persist additional data in the token, such as the real token from your API or OAuth access token.
+    async jwt({ token, user, account }) {
+      // Persist token from custom credentials provider.
+      if (user && "realToken" in user && user.realToken) {
         token.realToken = user.realToken;
       }
+
+      // Persist OAuth access token for Google/GitHub sign in.
+      if (account?.access_token) {
+        token.realToken = account.access_token;
+      }
+
       return token;
     },
 

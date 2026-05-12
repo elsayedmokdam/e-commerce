@@ -4,51 +4,53 @@ import { SignupResponse } from "../types/signup_interface";
 import { signinService } from "./signin.service";
 import { signupService } from "./signup.service";
 
-/**
- * Signin/Signup a user using OAuth provider data
- * Tries to signup first (for new users), and if user already exists, falls back to signin
- * @param {OAuthSigninData} payload - OAuth provider data
- * @returns {Promise<HttpResult<SigninResponse | SignupResponse>>} - A Promise resolving to the API response with token
- */
+export interface OAuthSigninData {
+  provider: "google" | "github";
+  accessToken: string;
+  email: string;
+  name: string;
+}
+
+const OAUTH_PASSWORD = "OAuth#Placeholder123";
+
 export const oauthService = async (
   payload: OAuthSigninData,
 ): Promise<HttpResult<SigninResponse | SignupResponse>> => {
-
-  // Try to signup the user first (this will create new account or fail if exists)
+  // 1. Try signup first (new users)
   try {
     const signupResponse = await signupService({
       name: payload.name,
       email: payload.email,
-      password: "Khaled#123",
-      rePassword: "Khaled#123",
-      phone: "", // OAuth users can add phone later
+      password: OAUTH_PASSWORD,
+      rePassword: OAUTH_PASSWORD,
+      phone: "",
     });
 
-    if (signupResponse.ok) {
-        console.log("OAuth signup successful:", signupResponse);
+    // Only return if we actually got a token back
+    if (signupResponse.ok && signupResponse.data?.token) {
+      console.log("OAuth signup successful");
       return signupResponse;
     }
   } catch (error) {
     console.log("OAuth signup attempt failed:", error);
   }
 
-  // If signup fails (user likely exists), try signin with the generated password
-  // The backend should handle OAuth email/password authentication
+  // 2. Fallback: signin (existing users)
   try {
     const signinResponse = await signinService({
       email: payload.email,
-      password: "Khaled#123",
+      password: OAUTH_PASSWORD,
     });
 
-    if (signinResponse.ok) {
-      console.log("OAuth signin successful:", signinResponse);
+    if (signinResponse.ok && signinResponse.data?.token) {
+      console.log("OAuth signin successful");
       return signinResponse;
     }
   } catch (error) {
     console.log("OAuth signin attempt failed:", error);
   }
 
-  // If both fail, return error response
+  // 3. Both failed
   return {
     ok: false,
     error: {
@@ -56,10 +58,3 @@ export const oauthService = async (
     },
   } as any;
 };
-
-export interface OAuthSigninData {
-  provider: "google" | "github";
-  accessToken: string;
-  email: string;
-  name: string;
-}

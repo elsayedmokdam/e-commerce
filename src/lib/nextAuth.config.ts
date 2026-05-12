@@ -70,13 +70,19 @@ export const nextAuthConfig: NextAuthOptions = {
     // This function is called in each successful authentication and in each navigation.
     // You can use it to persist additional data in the token, such as the real token from your API.
     async jwt({ token, user, account }) {
-      // Persist token from custom credentials provider.
+      // Credentials provider 
       if (user && "realToken" in user && user.realToken) {
         token.realToken = user.realToken;
       }
 
-      // For OAuth providers, call backend to get a proper backend token
-      if (user && account?.access_token) {
+      // OAuth providers 
+      // `account` is only populated on the FIRST sign-in, never on
+      // subsequent session refreshes, so this block runs exactly once.
+      if (
+        account &&
+        account.provider !== "credentials" &&
+        account.access_token
+      ) {
         try {
           const response = await $SERVICE_REPOSITORY.Auth.oauth({
             provider: account.provider as "google" | "github",
@@ -85,8 +91,10 @@ export const nextAuthConfig: NextAuthOptions = {
             name: token.name!,
           });
 
-          if (response.ok) {
+          if (response.ok && response.data?.token) {
             token.realToken = response.data.token;
+          } else {
+            console.error("OAuth backend call returned no token:", response);
           }
         } catch (error) {
           console.error("Failed to get backend token for OAuth:", error);

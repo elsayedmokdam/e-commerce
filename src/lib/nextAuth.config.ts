@@ -68,16 +68,29 @@ export const nextAuthConfig: NextAuthOptions = {
 
   callbacks: {
     // This function is called in each successful authentication and in each navigation.
-    // You can use it to persist additional data in the token, such as the real token from your API or OAuth access token.
+    // You can use it to persist additional data in the token, such as the real token from your API.
     async jwt({ token, user, account }) {
       // Persist token from custom credentials provider.
       if (user && "realToken" in user && user.realToken) {
         token.realToken = user.realToken;
       }
 
-      // Persist OAuth access token for Google/GitHub sign in.
-      if (account?.access_token) {
-        token.realToken = account.access_token;
+      // For OAuth providers, call backend to get a proper backend token
+      if (account?.access_token && account?.provider && token.email && token.name) {
+        try {
+          const response = await $SERVICE_REPOSITORY.Auth.oauthSignin({
+            provider: account.provider as "google" | "github",
+            accessToken: account.access_token,
+            email: token.email,
+            name: token.name,
+          });
+
+          if (response.ok && response.data.token) {
+            token.realToken = response.data.token;
+          }
+        } catch (error) {
+          console.error("Failed to get backend token for OAuth:", error);
+        }
       }
 
       return token;

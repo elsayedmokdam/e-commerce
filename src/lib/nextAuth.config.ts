@@ -2,6 +2,7 @@ import $SERVICE_REPOSITORY from "@/services/service.repo";
 import { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import Github from "next-auth/providers/github";
 
 export const nextAuthConfig: NextAuthOptions = {
   providers: [
@@ -48,6 +49,11 @@ export const nextAuthConfig: NextAuthOptions = {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
+    Github({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
 

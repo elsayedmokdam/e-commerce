@@ -8,6 +8,7 @@ import {
   FaEye,
   FaEyeSlash,
   FaLock,
+  FaGithub,
 } from "react-icons/fa6";
 import { FormField } from "../shared/app-form/app_form.interface";
 import AppInput from "../shared/app-input/AppInput";
@@ -24,8 +25,8 @@ const socialButtons = [
     icon: <FaGoogle className="h-4 w-4 text-red-600" />,
   },
   {
-    label: "Facebook",
-    icon: <FaFacebookF className="h-4 w-4 text-blue-600  " />,
+    label: "Github",
+    icon: <FaGithub className="h-4 w-4 text-blue-600  " />,
   },
 ];
 

@@ -3,6 +3,7 @@ import AppButton from "../shared/app-button/AppButton";
 import AppForm from "../shared/app-form/AppForm";
 import {
   FaFacebookF,
+  FaGithub,
   FaGoogle,
   FaLock,
   FaPhone,
@@ -92,8 +93,8 @@ const socialButtons = [
     icon: <FaGoogle className="h-4 w-4 text-red-600" />,
   },
   {
-    label: "Facebook",
-    icon: <FaFacebookF className="h-4 w-4 text-blue-600  " />,
+    label: "Github",
+    icon: <FaGithub className="h-4 w-4 text-blue-600  " />,
   },
 ];
 

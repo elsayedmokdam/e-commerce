@@ -76,13 +76,13 @@ export const nextAuthConfig: NextAuthOptions = {
       }
 
       // For OAuth providers, call backend to get a proper backend token
-      if (account?.access_token && account?.provider && token.email && token.name) {
+      if (user && account?.access_token) {
         try {
           const response = await $SERVICE_REPOSITORY.Auth.oauthSignin({
             provider: account.provider as "google" | "github",
             accessToken: account.access_token,
-            email: token.email,
-            name: token.name,
+            email: token.email!,
+            name: token.name!,
           });
 
           if (response.ok && response.data.token) {

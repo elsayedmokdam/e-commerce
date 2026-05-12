@@ -47,8 +47,6 @@ export default async function RootLayout({
   }
 
   const token = await getMyToken();
-  console.log(token?.realToken);
-
   return (
     <html lang="en" className={`${exo.variable}`}>
       <body>

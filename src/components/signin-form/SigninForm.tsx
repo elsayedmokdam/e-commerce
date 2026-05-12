@@ -109,11 +109,12 @@ export default function SigninForm() {
     notify.success("Signin successful!");
     router.push("/");
 
-    // After the update in nextAuth 
+    // After the update in nextAuth
     // signIn("credentials", {...data, redirectTo: "/"});
   }
 
   function handleSigninWithOAuth(provider: string) {
+    console.log("Signing in with", provider);
     signIn(provider.toLowerCase(), { callbackUrl: "/" });
   }
 

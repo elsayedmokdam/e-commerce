@@ -12,7 +12,6 @@ export default async function page({ params }: any) {
   // Fetch wishlist
   const wishlistResponse = await $SERVICE_REPOSITORY.Wishlist.getWishlist();
   let wishlistIds: string[] = [];
-  console.log("Wishlist Response", wishlistResponse);
 
   if (wishlistResponse.ok) {
     wishlistIds = wishlistResponse.data.data.map(

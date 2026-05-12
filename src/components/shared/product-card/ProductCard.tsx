@@ -32,8 +32,6 @@ export default function ProductCard({
         )
       : 0;
 
-  console.log(wishlistIds);
-
   const isInWishlist = wishlistIds.includes(product.id);
 
   return (

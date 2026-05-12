@@ -23,7 +23,6 @@ export default function page() {
   // Make a form ref to access the form
   const formRef = useRef<AppFormRef>(null);
 
-  console.log("CartId",cartItems?.cartId);
 
   function handleCashOrder() {
     formRef.current?.submit(async (data: CreateOrderPayloadProps) => {
@@ -34,7 +33,6 @@ export default function page() {
       );
 
       if (response.ok) {
-        console.log("User Id",response.data.user.id);
         notify.success(response.data.message);
         setNumOfCartItems(0);
         setCartItems(null);

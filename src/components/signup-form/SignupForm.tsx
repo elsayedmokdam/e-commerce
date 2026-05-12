@@ -113,9 +113,10 @@ export default function SignupForm() {
   }
 
   function handleSigninWithOAuth(provider: string) {
-      signIn(provider.toLowerCase(), { callbackUrl: "/" });
-    }
-  
+    console.log("Signing in with", provider);
+    signIn(provider.toLowerCase(), { callbackUrl: "/" });
+  }
+
   return (
     <>
       <div className="grid gap-3 sm:grid-cols-2">

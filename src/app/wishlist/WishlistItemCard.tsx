@@ -6,10 +6,10 @@ import { removeFromWishlistAction } from "@/services/actions/wishlist.action";
 import { ProductData } from "@/services/types/products_interface";
 import { notify } from "@/services/utils/helpers/alerts";
 import Link from "next/link";
-import { useContext } from "react";
 import { FaCheck, FaRegTrashCan } from "react-icons/fa6";
-import { wishlistContext } from "../_providers/context/WishlistContextProvider";
 import AppButton from "@/components/shared/app-button/AppButton";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
+import { setNumOfWishlistItems } from "@/redux/store/slices/wishlistSlice/WishlistSlice";
 
 export default function WishlistItemCard({
   item,
@@ -21,17 +21,19 @@ export default function WishlistItemCard({
   const isInCart = cartIds.has(item._id);
   const isOutOfStock = item.quantity <= 0;
 
-  const { setNumOfWishlistItems } = useContext(wishlistContext);
+  const dispatch = useAppDispatch();
+  const numOfWishlistItems = useAppSelector(
+    (state) => state.wishlist.numOfWishlistItems,
+  );
 
   async function handleRemoveFromWishlist(id: string) {
     const res = await removeFromWishlistAction(id);
     if (!res.ok) {
-        notify.error(res.error.message);
-    }else{
-        notify.success(res.data.message);
-        setNumOfWishlistItems((prev) => prev - 1);
+      notify.error(res.error.message);
+    } else {
+      notify.success(res.data.message);
+      dispatch(setNumOfWishlistItems(numOfWishlistItems - 1));
     }
-    
   }
   return (
     <div className="grid grid-cols-13 items-center px-6 py-5 border-b last:border-none border-gray-200">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ReactNode, useContext } from "react";
+import { useState, ReactNode } from "react";
 import AppButton from "../app-button/AppButton";
 import { FaHeart, FaRegHeart, FaSpinner } from "react-icons/fa6";
 import {
@@ -8,7 +8,8 @@ import {
   removeFromWishlistAction,
 } from "@/services/actions/wishlist.action";
 import { notify } from "@/services/utils/helpers/alerts";
-import { wishlistContext } from "@/app/_providers/context/WishlistContextProvider";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { setNumOfWishlistItems } from "@/redux/store/slices/wishlistSlice/WishlistSlice";
 
 export default function WishlistToggleBtn({
   productId,
@@ -26,7 +27,7 @@ export default function WishlistToggleBtn({
 }) {
   const [isInWishlist, setIsInWishlist] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
-  const { setNumOfWishlistItems } = useContext(wishlistContext);
+  const dispatch = useAppDispatch();
 
   async function handleToggle(e: any) {
     e.stopPropagation();
@@ -42,7 +43,7 @@ export default function WishlistToggleBtn({
       } else {
         notify.success(res.data.message);
         setIsInWishlist(false);
-        setNumOfWishlistItems(res.data.data.length);
+        dispatch(setNumOfWishlistItems(res.data.data.length));
       }
     } else {
       const res = await addToWishlistAction({ productId });
@@ -52,7 +53,7 @@ export default function WishlistToggleBtn({
       } else {
         notify.success(res.data.message);
         setIsInWishlist(true);
-        setNumOfWishlistItems(res.data.data.length);
+        dispatch(setNumOfWishlistItems(res.data.data.length));
       }
     }
     setIsLoading(false);

@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import AppButton from "../shared/app-button/AppButton";
 import AppForm from "../shared/app-form/AppForm";
 import {
-  FaFacebookF,
   FaGoogle,
   FaEye,
   FaEyeSlash,
@@ -109,6 +108,7 @@ export default function SigninForm() {
 
     notify.success("Signin successful!");
     router.push("/");
+    router.refresh();
 
     // After the update in nextAuth
     // signIn("credentials", {...data, redirectTo: "/"});

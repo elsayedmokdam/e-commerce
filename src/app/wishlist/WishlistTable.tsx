@@ -1,17 +1,19 @@
 "use client";
-import { useContext, useMemo } from "react";
-import { cartContext } from "../_providers/context/CartContextProvider";
+import { useMemo } from "react";
 import { ProductData } from "@/services/types/products_interface";
 import WishlistItemCard from "./WishlistItemCard";
+import { useAppSelector } from "@/redux/store/hooks";
 
 export default function WishlistTable({
   wishlist,
 }: {
   wishlist: ProductData[];
 }) {
-  const { cartItems } = useContext(cartContext);
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const cartIds = useMemo(() => {
-    return new Set(cartItems?.data.products.map((item) => item.product._id) || []);
+    return new Set(
+      cartItems?.data.products.map((item) => item.product._id) || [],
+    );
   }, [cartItems]);
 
   return (

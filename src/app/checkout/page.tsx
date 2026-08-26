@@ -2,27 +2,35 @@
 import CheckoutForm from "@/components/checkout-form/CheckoutForm";
 import { OrderSummary } from "@/components/shared/order-summary/OrderSummary";
 import PageHeader from "@/components/shared/page-header/PageHeader";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaBuilding, FaReceipt } from "react-icons/fa6";
-import { cartContext } from "../_providers/context/CartContextProvider";
 import { AppFormRef } from "@/components/shared/app-form/AppForm";
-import { createCashOrderAction, createCheckoutSessionAction } from "@/services/actions/order.action";
+import {
+  createCashOrderAction,
+  createCheckoutSessionAction,
+} from "@/services/actions/order.action";
 import { notify } from "@/services/utils/helpers/alerts";
 import { CreateOrderPayloadProps } from "@/services/types/order_interface";
+import { useAppSelector, useAppDispatch } from "@/redux/store/hooks";
+import { clearCart } from "@/redux/store/slices/cartSlice/CartSlice";
 
 export default function page() {
-  const { cartItems, numOfCartItems, setNumOfCartItems, setCartItems } =
-    useContext(cartContext);
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const numOfCartItems = useAppSelector((state) => state.cart.numOfCartItems);
+  const dispatch = useAppDispatch();
+
   const products = cartItems?.data.products || [];
   const totalPrice = cartItems?.data.totalCartPrice || 0;
-  const totalQuantity = cartItems?.data.products
-    .map((count) => count.count)
-    .reduce((a, b) => a + b, 0);
-  const [loadingType, setLoadingType] = useState<"cash" | "online" | null>(null);
+  const totalQuantity =
+    cartItems?.data.products.reduce((total, item) => total + item.count, 0) ??
+    0;
+
+  const [loadingType, setLoadingType] = useState<"cash" | "online" | null>(
+    null,
+  );
 
   // Make a form ref to access the form
   const formRef = useRef<AppFormRef>(null);
-
 
   function handleCashOrder() {
     formRef.current?.submit(async (data: CreateOrderPayloadProps) => {
@@ -34,8 +42,7 @@ export default function page() {
 
       if (response.ok) {
         notify.success(response.data.message);
-        setNumOfCartItems(0);
-        setCartItems(null);
+        dispatch(clearCart());
         formRef.current?.reset();
       } else {
         notify.error(response.error.message);
@@ -52,8 +59,7 @@ export default function page() {
       );
 
       if (response.ok) {
-        setNumOfCartItems(0);
-        setCartItems(null);
+        dispatch(clearCart());
         formRef.current?.reset();
         window.open(response.data.session.url, "_self");
       } else {

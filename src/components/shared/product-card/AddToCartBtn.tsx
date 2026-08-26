@@ -1,16 +1,17 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import AppButton from "../app-button/AppButton";
 import { FiShoppingCart } from "react-icons/fi";
 import { addToCartAction } from "../../../services/actions/cart.action";
-import { cartContext } from "@/app/_providers/context/CartContextProvider";
 import { notify } from "@/services/utils/helpers/alerts";
 import { FaSpinner } from "react-icons/fa6";
+import { useAppDispatch } from "@/redux/store/hooks";
+import { setCartItems } from "@/redux/store/slices/cartSlice/CartSlice";
 
 export default function AddToCartBtn({ productId }: { productId: string }) {
   const [loading, setLoading] = useState(false);
-  const { setNumOfCartItems, setCartItems } = useContext(cartContext);
+  const dispatch = useAppDispatch();
 
   async function handleAddToCart(productId: string) {
     if (loading) return;
@@ -21,8 +22,7 @@ export default function AddToCartBtn({ productId }: { productId: string }) {
 
     if (response.ok) {
       notify.success(response.data.message);
-      setNumOfCartItems(response.data.numOfCartItems);
-      setCartItems(response.data);
+      dispatch(setCartItems(response?.data));
     } else {
       notify.error(response.error.message);
     }

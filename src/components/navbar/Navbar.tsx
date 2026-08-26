@@ -27,23 +27,28 @@ import {
 } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import swal from "sweetalert";
-import { cartContext } from "@/app/_providers/context/CartContextProvider";
-import { wishlistContext } from "@/app/_providers/context/WishlistContextProvider";
+import { useAppSelector, useAppDispatch } from "@/redux/store/hooks";
+import { setNumOfCartItems } from "@/redux/store/slices/cartSlice/CartSlice";
+import { setNumOfWishlistItems } from "@/redux/store/slices/wishlistSlice/WishlistSlice";
 
 export function Navbar() {
+  const { data } = useSession();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const route = useRouter();
+  const dispatch = useAppDispatch();
 
-  const { numOfCartItems } = React.useContext(cartContext);
-  const { numOfWishlistItems } = React.useContext(wishlistContext);
+  const numOfCartItems = useAppSelector((state) => state.cart.numOfCartItems);
+  const numOfWishlistItems = useAppSelector(
+    (state) => state.wishlist.numOfWishlistItems,
+  );
 
   React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  });
+  }, []);
 
   const handleScroll = () => {
     if (window.scrollY > 50) {
@@ -52,8 +57,6 @@ export function Navbar() {
       setScrolled(false);
     }
   };
-
-  const { data } = useSession();
 
   function handleLogout() {
     // Use swall before signing out to confirm the action with the user
@@ -69,6 +72,8 @@ export function Navbar() {
           callbackUrl: "/signin", // Redirect to signin page after logout
           redirect: false,
         }).then(() => {
+          dispatch(setNumOfCartItems(0));
+          dispatch(setNumOfWishlistItems(0));
           route.push("/signin"); // Ensure client-side navigation to signin page
         });
       }

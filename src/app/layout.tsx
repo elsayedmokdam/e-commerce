@@ -5,15 +5,13 @@ import React from "react";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { Toaster } from "react-hot-toast";
-import MySessionProvider from "./_providers/MySessionProvider";
-import CartContextProvider from "./_providers/context/CartContextProvider";
 import { getLoggedUserCartAction } from "@/services/actions/cart.action";
 import { HttpResult } from "@/services/utils/http";
 import { CartResponse } from "@/services/types/cart_interface";
-import { getMyToken } from "@/services/utils/helpers/getMyToken";
 import { GetWishlistResponse } from "@/services/types/wishlist_interface";
 import { getWishlistAction } from "@/services/actions/wishlist.action";
-import WishlistContextProvider from "./_providers/context/WishlistContextProvider";
+import Providers from "./_providers/Providers";
+
 const exo = Exo({
   variable: "--font-exo",
   subsets: ["latin"],
@@ -32,35 +30,40 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Get user's cart
   const cartResponse: HttpResult<CartResponse | null> =
     await getLoggedUserCartAction();
-  let userCart = null;
-  if (cartResponse.ok) {
-    userCart = cartResponse.data;
-  }
 
+  const userCart = cartResponse.ok ? cartResponse.data : null;
+
+  // Get user's wishlist
   const wishlistResponse: HttpResult<GetWishlistResponse | null> =
     await getWishlistAction();
-  let userWishlist = null;
-  if (wishlistResponse.ok) {
-    userWishlist = wishlistResponse.data;
-  }
 
-  const token = await getMyToken();
+  const userWishlist = wishlistResponse.ok ? wishlistResponse.data : null;
+
+  // Initial Redux state
+  const preloadedState = {
+    cart: {
+      cartItems: userCart,
+      numOfCartItems: userCart?.numOfCartItems ?? 0,
+    },
+
+    wishlist: {
+      numOfWishlistItems: userWishlist?.count ?? 0,
+    },
+  };
+
   return (
     <html lang="en" className={`${exo.variable}`}>
       <body>
         {/* Client Boundary Pattern */}
-        <MySessionProvider>
-          <WishlistContextProvider userWishlistLength={userWishlist?.count}>
-            <CartContextProvider userCart={userCart}>
-              <Navbar />
-              {children}
-              <Footer />
-              <Toaster position="top-center" />
-            </CartContextProvider>
-          </WishlistContextProvider>
-        </MySessionProvider>
+        <Providers preloadedState={preloadedState}>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster position="top-center" />
+        </Providers>
       </body>
     </html>
   );

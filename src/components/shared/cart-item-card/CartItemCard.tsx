@@ -8,11 +8,15 @@ import {
   removeFromCartAction,
   updateCartItemAction,
 } from "../../../services/actions/cart.action";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { notify } from "@/services/utils/helpers/alerts";
-import { cartContext } from "@/app/_providers/context/CartContextProvider";
 import formatPrice from "@/lib/helpers/formatPrice";
 import formatTitle from "@/lib/helpers/formatTitle";
+import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
+import {
+  setCartItems,
+  setNumOfCartItems,
+} from "@/redux/store/slices/cartSlice/CartSlice";
 
 export function CartItemCard({ product }: { product: Product }) {
   const {
@@ -23,12 +27,13 @@ export function CartItemCard({ product }: { product: Product }) {
       id: productId,
     },
     price,
-    _id,
     count,
   } = product;
 
-  const { setNumOfCartItems, setCartItems } = useContext(cartContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { numOfCartItems, cartItems } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   async function handleRemoveProduct(id: string) {
     setIsLoading(true);
@@ -39,33 +44,36 @@ export function CartItemCard({ product }: { product: Product }) {
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
     }).then((willDelete) => {
-      if (willDelete) {
-        // Optimistic update(client Side)
-        setCartItems((prev) => {
-          if (!prev) return prev;
+      if (!willDelete) return;
 
-          return {
-            ...prev,
-            numOfCartItems: prev.numOfCartItems - 1,
+      const previousCart = cartItems;
+      // Optimistic update(client Side)
+      if (cartItems) {
+        dispatch(
+          setCartItems({
+            ...cartItems,
+            numOfCartItems: cartItems.numOfCartItems - 1,
             data: {
-              ...prev.data,
-              products: prev.data.products.filter(
-                (item) => item.product._id !== productId,
+              ...cartItems.data,
+              products: cartItems.data.products.filter(
+                (item) => item.product._id !== id,
               ),
+              totalCartPrice: cartItems.data.totalCartPrice - price * count,
             },
-          };
-        });
-        // Handle the request on server
-        removeFromCartAction(id).then((res) => {
-          if (res.ok) {
-            notify.success(res.data.message);
-            setNumOfCartItems(res.data.numOfCartItems);
-            setCartItems(res.data);
-          } else {
-            notify.error(res.error.message);
-          }
-        });
+          }),
+        );
       }
+      // Handle the request on server
+      removeFromCartAction(id).then((res) => {
+        if (res.ok) {
+          notify.success(res.data.message);
+          dispatch(setNumOfCartItems(numOfCartItems - 1));
+          dispatch(setCartItems(res.data));
+        } else {
+          notify.error(res.error.message);
+          dispatch(setCartItems(previousCart));
+        }
+      });
       setIsLoading(false);
     });
   }
@@ -77,34 +85,41 @@ export function CartItemCard({ product }: { product: Product }) {
       return;
     }
 
-    setCartItems((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        numOfCartItems: prev.numOfCartItems - count + 1,
-        data: {
-          ...prev.data,
-          products: prev.data.products.map((item) => {
-            if (item.product._id === id) {
-              return {
-                ...item,
-                count,
-              };
-            }
-            return item;
-          }),
-        },
-      };
-    });
-    // Handle the request on server
+    // Save a copy for rollback
+    const previousCart = cartItems ? structuredClone(cartItems) : null;
+
+    // Optimistic update (client side)
+    if (cartItems) {
+      dispatch(
+        setCartItems({
+          ...cartItems,
+          data: {
+            ...cartItems.data,
+            products: cartItems.data.products.map((item) =>
+              item.product._id === id ? { ...item, count } : item,
+            ),
+            totalCartPrice:
+              cartItems.data.totalCartPrice - price + price * count,
+          },
+        }),
+      );
+    }
+
+    // Update on server
     updateCartItemAction(id, { count }).then((res) => {
       if (res.ok) {
         notify.success(res.data.message);
-        setNumOfCartItems(res.data.numOfCartItems);
-        setCartItems(res.data);
+
+        dispatch(setCartItems(res.data));
+        dispatch(setNumOfCartItems(res.data.numOfCartItems));
       } else {
         notify.error(res.error.message);
+
+        if (previousCart) {
+          dispatch(setCartItems(previousCart));
+        }
       }
+
       setIsLoading(false);
     });
   }

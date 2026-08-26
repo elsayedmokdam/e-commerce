@@ -3,28 +3,34 @@ import { CartItemCard } from "@/components/shared/cart-item-card/CartItemCard";
 import IsEmpty from "@/components/shared/is-empty/IsEmpty";
 import { OrderSummary } from "@/components/shared/order-summary/OrderSummary";
 import Link from "next/link";
-import { useContext } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiTrash2 } from "react-icons/fi";
-import { cartContext } from "../_providers/context/CartContextProvider";
 import { clearCartAction } from "@/services/actions/cart.action";
 import { notify } from "@/services/utils/helpers/alerts";
 import { MdRemoveShoppingCart } from "react-icons/md";
+import { useAppDispatch } from "@/redux/store/hooks";
+import {
+  setCartItems,
+  clearCart,
+} from "@/redux/store/slices/cartSlice/CartSlice";
+import { CartResponse } from "@/services/types/cart_interface";
 
 export default function CartItemsList({
   products,
-  numOfCartItems,
   totalQuantity,
   totalPrice,
+  cartItems,
+  numOfCartItems,
 }: {
   products: any[];
-  numOfCartItems: number;
   totalQuantity: number | undefined;
   totalPrice: number;
+  cartItems: CartResponse | null;
+  numOfCartItems: number;
 }) {
-  const { setCartItems, setNumOfCartItems } = useContext(cartContext);
+  const dispatch = useAppDispatch();
 
-  function clearCart() {
+  function clearCartHandler() {
     swal({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -32,32 +38,34 @@ export default function CartItemsList({
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
     }).then((willDelete) => {
-      if (willDelete) {
-        // Optimistic update(client Side)
-        setCartItems((prev) => {
-          if (!prev) return prev;
+      if (!willDelete) return;
 
-          return {
-            ...prev,
+      const previousCart = cartItems ? structuredClone(cartItems) : null;
+      // Optimistic update(client Side)
+      if (cartItems) {
+        dispatch(
+          setCartItems({
+            ...cartItems,
             numOfCartItems: 0,
             data: {
-              ...prev.data,
+              ...cartItems.data,
               products: [],
               totalCartPrice: 0,
             },
-          };
-        });
-        // Handle the request on server
-        clearCartAction().then((res) => {
-          if (res.ok) {
-            notify.success(res.data.message);
-            setNumOfCartItems(0);
-            setCartItems(null);
-          } else {
-            notify.error(res.error.message);
-          }
-        });
+          }),
+        );
       }
+      // Handle the request on server
+      clearCartAction().then((res) => {
+        if (res.ok) {
+          dispatch(clearCart());
+          notify.success(res.data.message);
+        } else {
+          // Rollback to the previous state
+          previousCart && dispatch(setCartItems(previousCart));
+          notify.error(res.error.message);
+        }
+      });
     });
   }
 
@@ -97,7 +105,7 @@ export default function CartItemsList({
                 </Link>
 
                 <AppButton
-                  onClick={clearCart}
+                  onClick={clearCartHandler}
                   className="bg-transparent hover:bg-transparent hover:text-red-500 text-gray-400 flex items-center gap-1"
                 >
                   <span>

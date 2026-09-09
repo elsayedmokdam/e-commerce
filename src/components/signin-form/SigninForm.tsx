@@ -2,13 +2,7 @@
 import { useMemo, useState } from "react";
 import AppButton from "../shared/app-button/AppButton";
 import AppForm from "../shared/app-form/AppForm";
-import {
-  FaGoogle,
-  FaEye,
-  FaEyeSlash,
-  FaLock,
-  FaGithub,
-} from "react-icons/fa6";
+import { FaGoogle, FaEye, FaEyeSlash, FaLock, FaGithub } from "react-icons/fa6";
 import { FormField } from "../shared/app-form/app_form.interface";
 import AppInput from "../shared/app-input/AppInput";
 import { MdEmail } from "react-icons/md";
@@ -17,6 +11,7 @@ import { SigninData } from "@/services/types/signin_interface";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { notify } from "@/services/utils/helpers/alerts";
+import Link from "next/link";
 
 const socialButtons = [
   {
@@ -147,14 +142,21 @@ export default function SigninForm() {
         layoutClassName="space-y-4"
         buttonText="Sign in"
         children={
-          <div className="mt-5 text-sm text-gray-800">
-            <label className="flex items-center gap-3">
+          <div className="mt-5 flex items-center justify-between text-sm">
+            <label className="flex items-center gap-3 text-gray-800">
               <input
                 type="checkbox"
-                className="mt-1 h-4 w-4 rounded border-slate-300 accent-main-color focus:ring-2 focus:ring-main-color"
+                className="h-4 w-4 rounded border-slate-300 accent-main-color focus:ring-2 focus:ring-main-color"
               />
-              keep Me Signin
+              Keep me signed in
             </label>
+
+            <Link
+              href="/forgot-password"
+              className="font-medium text-main-color hover:underline transition"
+            >
+              Forgot password?
+            </Link>
           </div>
         }
         schema={$SCHEMAS_REPOSITORY.SIGNIN_FORM}

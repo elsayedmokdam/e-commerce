@@ -3,7 +3,7 @@ import { FaShieldAlt, FaStar, FaUndo } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa6";
 import ImagesSlider from "@/components/product-details-components/images-slider/ImagesSlider";
 import { ProductData } from "@/services/types/products_interface";
-import formatPrice from "@/lib/helpers/formatPrice";
+import formatPrice from "@/services/utils/helpers/formatPrice";
 import AddToCartBtn from "@/components/shared/product-card/AddToCartBtn";
 import FeatureCard from "@/components/shared/feature-card/FeatureCard";
 import WishlistToggleBtn from "@/components/shared/product-card/WishlistToggleBtn";

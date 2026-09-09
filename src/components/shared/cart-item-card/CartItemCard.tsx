@@ -10,8 +10,8 @@ import {
 } from "../../../services/actions/cart.action";
 import { useState } from "react";
 import { notify } from "@/services/utils/helpers/alerts";
-import formatPrice from "@/lib/helpers/formatPrice";
-import formatTitle from "@/lib/helpers/formatTitle";
+import formatPrice from "@/services/utils/helpers/formatPrice";
+import formatTitle from "@/services/utils/helpers/formatTitle";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import {
   setCartItems,

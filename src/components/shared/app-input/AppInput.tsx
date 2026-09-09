@@ -22,8 +22,8 @@ export default function AppInput({
   const align = position ?? iconPosition;
 
   return (
-    <Field>
-      {label && <FieldLabel className="mb-2">{label}</FieldLabel>}
+    <Field className="gap-5">
+      {label && <FieldLabel>{label}</FieldLabel>}
 
       <InputGroup
         className={`bg-white w-full border py-6 px-2 border-gray-300 ${className}`}

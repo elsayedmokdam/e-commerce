@@ -14,6 +14,7 @@ function showToast(type: ToastType, message: string, config?: ToastOptions) {
       return toast.loading(message, config);
     default:
       return toast(message, config);
+      
   }
 }
 

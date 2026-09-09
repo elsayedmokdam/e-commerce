@@ -1,7 +1,7 @@
 "use client";
 import AddToCartBtn from "@/components/shared/product-card/AddToCartBtn";
-import formatPrice from "@/lib/helpers/formatPrice";
-import formatTitle from "@/lib/helpers/formatTitle";
+import formatPrice from "@/services/utils/helpers/formatPrice";
+import formatTitle from "@/services/utils/helpers/formatTitle";
 import { removeFromWishlistAction } from "@/services/actions/wishlist.action";
 import { ProductData } from "@/services/types/products_interface";
 import { notify } from "@/services/utils/helpers/alerts";

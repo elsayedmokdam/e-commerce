@@ -23,9 +23,37 @@ interface DropDownProps {
   };
 }
 
+const dropDownLinks = [
+  // {
+  //   label: "Profile",
+  //   href: "/profile",
+  //   icon: <FaRegUser />,
+  // },
+  {
+    label: "Contact",
+    href: "/contact",
+    icon: <TiContacts />,
+  },
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: <IoMdSettings />,
+  },
+  {
+    label: "Wishlist",
+    href: "/wishlist",
+    icon: <FaRegHeart />,
+  },
+  // {
+  //   label: "Addresses",
+  //   href: "/addresses",
+  //   icon: <TiContacts />,
+  // },
+];
+
 export default function DropDown({ data }: DropDownProps) {
   const route = useRouter();
-  
+
   function handleLogout() {
     // Use swall before signing out to confirm the action with the user
     swal({
@@ -71,70 +99,20 @@ export default function DropDown({ data }: DropDownProps) {
           {/* Divider */}
           <DropdownMenuSeparator />
 
-          {/* My Profile */}
-          <DropdownMenuItem className="text-gray-600 p-4">
-            <Link
-              href="/profile"
-              className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
-            >
-              <span>
-                <FaRegUser className="size-4" />
-              </span>{" "}
-              My Profile
-            </Link>
-          </DropdownMenuItem>
-
-          {/* My Orders */}
-          <DropdownMenuItem className="text-gray-600 p-4">
-            <Link
-              href="/orders"
-              className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
-            >
-              <span>
-                <FaRegUser className="size-4" />
-              </span>{" "}
-              My Orders
-            </Link>
-          </DropdownMenuItem>
-
-          {/* My Wishlist */}
-          <DropdownMenuItem className="text-gray-600 p-4">
-            <Link
-              href="/wishlist"
-              className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
-            >
-              <span>
-                <FaRegHeart className="size-4" />
-              </span>{" "}
-              My Wishlist
-            </Link>
-          </DropdownMenuItem>
-
-          {/* My Adresses */}
-          <DropdownMenuItem className="text-gray-600 p-4">
-            <Link
-              href="/addresses"
-              className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
-            >
-              <span>
-                <TiContacts className="size-4" />
-              </span>{" "}
-              My Addresses
-            </Link>
-          </DropdownMenuItem>
-
-          {/* My Settings */}
-          <DropdownMenuItem className="text-gray-600 p-4">
-            <Link
-              href="/settings"
-              className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
-            >
-              <span>
-                <IoMdSettings className="size-4" />
-              </span>{" "}
-              My Settings
-            </Link>
-          </DropdownMenuItem>
+          {/* Dropdown Items */}
+          {dropDownLinks.map((link) => (
+            <DropdownMenuItem className="text-gray-600 p-4">
+              <Link
+                href={link.href}
+                className="flex items-center gap-2 hover:text-main-color! cursor-pointer w-full font-medium"
+              >
+                <span>
+                  <span>{link.icon}</span>
+                </span>{" "}
+                {link.label}
+              </Link>
+            </DropdownMenuItem>
+          ))}
 
           <DropdownMenuSeparator />
           <DropdownMenuItem

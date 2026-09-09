@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-const AUTH_ROUTES = ["/signin", "/signup"];
+const AUTH_ROUTES = ["/signin", "/signup", "/forgot-password"];
 const PROTECTED_ROUTES = [
   "/checkout",
   "/orders",
@@ -47,6 +47,7 @@ export const config = {
     "/settings/:path*",
     "/signin",
     "/signup",
+    "/forgot-password",
   ],
 };
 

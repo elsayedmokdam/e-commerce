@@ -7,8 +7,8 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import AddToCartBtn from "./AddToCartBtn";
 import ViewProductBtn from "./ViewProductBtn";
-import formatTitle from "@/lib/helpers/formatTitle";
-import formatPrice from "@/lib/helpers/formatPrice";
+import formatTitle from "@/services/utils/helpers/formatTitle";
+import formatPrice from "@/services/utils/helpers/formatPrice";
 import WishlistToggleBtn from "./WishlistToggleBtn";
 import { FaHeart, FaSpinner } from "react-icons/fa6";
 

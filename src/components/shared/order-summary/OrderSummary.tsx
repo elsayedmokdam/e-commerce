@@ -9,9 +9,9 @@ import {
 import { BsArrowLeft } from "react-icons/bs";
 import { CiCreditCard1 } from "react-icons/ci";
 import Link from "next/link";
-import formatTitle from "@/lib/helpers/formatTitle";
+import formatTitle from "@/services/utils/helpers/formatTitle";
 import AppButton from "../app-button/AppButton";
-import formatPrice from "@/lib/helpers/formatPrice";
+import formatPrice from "@/services/utils/helpers/formatPrice";
 import { OrderSummaryProps } from "@/services/types/order_interface";
 
 export function OrderSummary({

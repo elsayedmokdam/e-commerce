@@ -10,12 +10,9 @@ export const signupSchemaValidation = zod
       .regex(/^[a-zA-Z][a-zA-Z ]{2,20}$/, "Please enter a valid username"),
 
     email: zod
-      .email("Email is required")
-      .nonempty("Email is required")
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Please enter a valid email",
-      ),
+        .string("Email is required")
+        .nonempty("Email is required")
+        .email("Please enter a valid email"),
 
     password: zod
       .string("Password is required")

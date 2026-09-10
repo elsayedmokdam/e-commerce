@@ -1,10 +1,8 @@
 import * as zod from "zod";
 
-export const signinSchemaValidation = zod.object({
+export const forgotPasswordSchemaValidation = zod.object({
   email: zod
     .string("Email is required")
     .nonempty("Email is required")
     .email("Please enter a valid email"),
-
-  password: zod.string().min(1, "Password is required"),
 });

@@ -25,7 +25,6 @@ export default function ForgotPasswordPage() {
       setStep(2);
     } else {
       notify.error("Failed to send code");
-      notify.error("Try again later");
     }
   };
 
@@ -36,7 +35,6 @@ export default function ForgotPasswordPage() {
       setStep(3);
     } else {
       notify.error("Failed to verify code");
-      notify.error("Try again later");
     }
   };
 
@@ -50,7 +48,6 @@ export default function ForgotPasswordPage() {
       router.push("/signin");
     } else {
       notify.error("Failed to reset password");
-      notify.error("Try again later");
     }
   };
 

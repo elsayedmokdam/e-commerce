@@ -5,6 +5,7 @@ import { FormField } from "../shared/app-form/app_form.interface";
 import AuthResetLayout from "../shared/auth-reset-layout/AuthResetLayout";
 import AppForm from "../shared/app-form/AppForm";
 import AppInput from "../shared/app-input/AppInput";
+import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
 
 export default function ResetPasswordForm({
   onSubmit,
@@ -53,6 +54,7 @@ export default function ResetPasswordForm({
         buttonText="Reset Password"
         formClassName="space-y-4"
         layoutClassName="space-y-4"
+        schema={$SCHEMAS_REPOSITORY.RESET_PASSWORD_FORM}
       />
     </AuthResetLayout>
   );

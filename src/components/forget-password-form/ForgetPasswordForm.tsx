@@ -6,14 +6,15 @@ import AuthResetLayout from "../shared/auth-reset-layout/AuthResetLayout";
 import AppForm from "../shared/app-form/AppForm";
 import AppInput from "../shared/app-input/AppInput";
 import { FormField } from "../shared/app-form/app_form.interface";
-
+import { forgotPasswordSchemaValidation } from "@/schemas/forgotPasswordSchema";
+import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
 
 export default function ForgotPasswordForm({
   onSubmit,
 }: {
   onSubmit: (data: any) => void;
 }) {
-  const fields : FormField[] = [
+  const fields: FormField[] = [
     {
       name: "email",
       type: "input",
@@ -53,6 +54,7 @@ export default function ForgotPasswordForm({
         onSubmit={onSubmit}
         buttonText="Send Reset Code"
         formClassName="space-y-4"
+        schema={$SCHEMAS_REPOSITORY.FORGOT_PASSWORD_FORM}
       />
     </AuthResetLayout>
   );

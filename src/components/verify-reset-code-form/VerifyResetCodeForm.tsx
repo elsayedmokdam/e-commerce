@@ -5,6 +5,8 @@ import AuthResetLayout from "../shared/auth-reset-layout/AuthResetLayout";
 import AppForm from "../shared/app-form/AppForm";
 import AppInput from "../shared/app-input/AppInput";
 import { FormField } from "../shared/app-form/app_form.interface";
+import { verifyResetCodeSchemaValidation } from "@/schemas/verifyResetCodeSchema";
+import { $SCHEMAS_REPOSITORY } from "@/schemas/schemas.repo";
 
 interface VerifyResetCodeProps {
   email?: string;
@@ -49,6 +51,7 @@ export default function VerifyResetCodeForm({
         onSubmit={onSubmit}
         buttonText="Verify Code"
         formClassName="space-y-4"
+        schema={$SCHEMAS_REPOSITORY.VERIFY_RESET_CODE_FORM}
       >
         <div className="text-center text-xs text-slate-500 mt-2">
           Didn't receive the code?{" "}

@@ -1,4 +1,3 @@
-
 import {
   FaEnvelope,
   FaPhone,
@@ -8,11 +7,9 @@ import {
 } from "react-icons/fa6";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
-
 import PageHeader from "@/components/shared/page-header/PageHeader";
 import Link from "next/link";
 import ContactForm from "@/components/contact-form/ContactForm";
-
 
 const contactInfo = [
   {
@@ -42,15 +39,14 @@ const contactInfo = [
 ];
 
 export default function ContactUs() {
-
   return (
     <>
       <PageHeader
         bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
         icon={<FaPhoneFlip className="text-white" />}
-        title="All Categories"
-        pageName={[{ name: "Categories", href: "/categories" }]}
-        subtitle="Explore our complete category collection"
+        title="Contact Us"
+        pageName={[{ name: "Contact", href: "/contact" }]}
+        subtitle="Get in touch with us"
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />
 
@@ -69,7 +65,6 @@ export default function ContactUs() {
                   contact methods below and we'll get back to you as soon as
                   possible.
                 </p>
-
 
                 <div className="mt-8 space-y-6 sm:mt-10">
                   {contactInfo.map((item) => {
@@ -107,6 +102,14 @@ export default function ContactUs() {
                   <div className="flex gap-3">
                     <Link
                       href="#"
+                      aria-label="Twitter"
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition hover:bg-white hover:text-main-color"
+                    >
+                      <FaTwitter />
+                    </Link>
+                    <Link
+                      href="https://www.facebook.com/elsayed.mokdam"
+                      target="_blank"
                       aria-label="Facebook"
                       className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition hover:bg-white hover:text-main-color"
                     >
@@ -114,19 +117,12 @@ export default function ContactUs() {
                     </Link>
 
                     <Link
-                      href="#"
+                      href="https://www.instagram.com/elsayed_mokdam/?hl=en"
+                      target="_blank"
                       aria-label="Instagram"
                       className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition hover:bg-white hover:text-main-color"
                     >
                       <FaInstagram />
-                    </Link>
-
-                    <Link
-                      href="#"
-                      aria-label="Twitter"
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition hover:bg-white hover:text-main-color"
-                    >
-                      <FaTwitter />
                     </Link>
                   </div>
                 </div>

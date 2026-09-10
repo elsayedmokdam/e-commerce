@@ -48,7 +48,7 @@ const AppForm = forwardRef<AppFormRef, AppFormProps>(
       formState: { isSubmitting, isValid },
     } = useForm({
       defaultValues,
-      mode: "onChange",
+      mode: "all",
       resolver,
     });
 

@@ -332,6 +332,9 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Link href="/wishlist" className="flex items-center gap-3 relative">
               <FaRegHeart className="size-6" />
+              <span className="text-xs absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                {numOfWishlistItems > 9 ? "9+" : numOfWishlistItems}
+              </span>
             </Link>
 
             <Link href="/cart" className="flex items-center gap-3 relative">
@@ -341,7 +344,7 @@ export function Navbar() {
               </span>
             </Link>
 
-            {data && <DropDown data={data} />}
+            <div>{data && <DropDown data={data} />}</div>
           </div>
 
           {/* Hamburger */}
@@ -367,7 +370,7 @@ export function Navbar() {
           </div>
 
           {/* Search */}
-          <div>
+          {/* <div>
             <AppInput
               placeholder="Search Products..."
               icon={<FaSearch />}
@@ -375,10 +378,10 @@ export function Navbar() {
               iconPosition="end"
               className="max-w-10/12 mx-auto my-5 rounded-lg"
             />
-          </div>
+          </div> */}
 
           {/* Links */}
-          <div className="px-7 font-medium">
+          <div className="px-7 pt-5 font-medium">
             <Link
               href="/"
               className="block p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
@@ -414,18 +417,32 @@ export function Navbar() {
           <div className="ps-7 space-y-4">
             <Link
               href="/wishlist"
-              className="flex items-center gap-3 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
+              className="flex items-center gap-6 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
             >
-              <FaRegHeart className="size-6" />
-              Wishlist
+              <div className="flex items-center gap-3">
+                <span>
+                  <FaRegHeart className="size-6" />
+                </span>
+                <span>Wishlist</span>
+              </div>
+              <span className="text-xs bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                {numOfWishlistItems}
+              </span>
             </Link>
 
             <Link
               href="/cart"
-              className="flex items-center gap-3 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
+              className="flex items-center gap-12.5 p-3 rounded-lg hover:text-main-color hover:bg-green-100 transition-colors duration-200"
             >
-              <FaCartShopping className="size-6" />
-              Cart
+              <div className="flex items-center gap-3">
+                <span>
+                  <FaCartShopping className="size-6" />
+                </span>
+                <span>Cart</span>
+              </div>
+              <span className="text-xs bg-main-color text-white rounded-full w-6 h-6 flex items-center justify-center">
+                {numOfCartItems}
+              </span>
             </Link>
           </div>
 

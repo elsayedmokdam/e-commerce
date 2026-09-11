@@ -71,7 +71,7 @@ export default function PageContent({
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-14">
           {/* LEFT - IMAGE SLIDER */}
-          <div className="bg-white h-fit rounded-xl p-4 md:p-6 lg:p-8 xl:p-10 shadow-sm shadow-gray-200 lg:col-span-1 sticky top-25">
+          <div className="bg-white h-fit rounded-xl p-4 md:p-6 lg:p-8 xl:p-10 shadow-sm shadow-gray-200 lg:col-span-1 lg:sticky top-25">
             <ImagesSlider images={productData.images} />
           </div>
 
@@ -211,7 +211,7 @@ export default function PageContent({
 
             {/* Features */}
             <div className="flex justify-between text-sm text-gray-600 mt-2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-4">
                 {featuredCards.map((card, index) => (
                   <FeatureCard
                     key={index}

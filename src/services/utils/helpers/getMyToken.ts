@@ -19,5 +19,5 @@ export async function getMyToken() {
 
   if (!decoded || !decoded.realToken) return null;
 
-  return String(decoded.realToken);
+  return decoded?.realToken as string ? decoded: null;
 }

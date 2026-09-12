@@ -97,6 +97,11 @@ The app also includes admin-side sections for managing users, reviews, and order
 - Submit support and inquiry messages
 - Structured form validation using Zod schemas
 
+### 8. Reviews and Feedback
+
+- Product review-related operations
+- Customer rating and review management
+
 ---
 
 ## Technologies Used

@@ -239,10 +239,3 @@ export default function PageContent({
   );
 }
 
-// Will be added in the README file after add this it in the project 
-/* ### 8. Reviews and Feedback
-
-- Product review-related operations
-- Customer rating and review management
-- Admin review handling
- */

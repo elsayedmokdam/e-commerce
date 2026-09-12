@@ -23,3 +23,16 @@ export interface CategoryData {
 export interface SpecificCategoryResponse {
   data: CategoryData;
 }
+
+export interface SubcategoryData {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubcategoryResponse {
+  data: SubcategoryData;
+}

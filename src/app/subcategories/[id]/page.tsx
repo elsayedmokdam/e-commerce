@@ -5,6 +5,7 @@ import { ProductData } from "@/services/types/products_interface";
 import ProductsList from "@/app/products/ProductsList";
 import ProductsLoading from "@/app/products/loading";
 import icon from "@public/allProductsIcon.svg";
+import { SubcategoryData } from "@/services/types/categories_interface";
 
 export default async function page({ params }: any) {
   const { id } = await params;
@@ -19,12 +20,21 @@ export default async function page({ params }: any) {
     );
   }
 
+  // Get SubCategory details
+  const response =
+    await $SERVICE_REPOSITORY.Subcategories.getSubcategoryById(id);
+  if (!response.ok) {
+    throw new Error(response.error.message);
+  }
+
+  const subcategoryData: SubcategoryData = response.data.data;
+
   // Fetch All products on a Category:
   async function SubCategoriesContent() {
     const response = await $SERVICE_REPOSITORY.Products.getProducts({
       limit: "15",
       page: "1",
-      category: id,
+      subcategory: id,
     });
 
     if (!response.ok) {
@@ -50,8 +60,14 @@ export default async function page({ params }: any) {
       <PageHeader
         bgColor="bg-linear-to-b from-[#16A34A] via-[#22C55E] to-[#4ADE80]"
         icon={icon.src}
-        title="All Products"
-        pageName={[{ name: "Products", href: "/products" }]}
+        title={subcategoryData.name}
+        pageName={[
+          { name: "categories", href: "/categories" },
+          {
+            name: subcategoryData.name,
+            href: `/categories/${subcategoryData._id}`,
+          },
+        ]}
         subtitle="Explore our complete product collection"
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />

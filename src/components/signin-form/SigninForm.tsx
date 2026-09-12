@@ -34,7 +34,7 @@ export default function SigninForm() {
         name: "email",
         type: "input",
         label: "Email*",
-        placeholder: "sayed@example.com",
+        placeholder: "enter: elsayedmikdam@gmail.com, an existing account for testing",
         props: {
           type: "email",
           autoComplete: "email",
@@ -47,7 +47,7 @@ export default function SigninForm() {
         name: "password",
         type: "input",
         label: "Password*",
-        placeholder: "Enter your password",
+        placeholder: "for test, enter: Sayed##123",
         props: {
           type: showPassword ? "text" : "password",
           autoComplete: "current-password",

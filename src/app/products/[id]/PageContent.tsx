@@ -2,7 +2,7 @@
 import { FaShieldAlt, FaStar, FaUndo } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa6";
 import ImagesSlider from "@/components/product-details-components/images-slider/ImagesSlider";
-import { ProductData } from "@/services/types/products_interface";
+import { ProductData, Review } from "@/services/types/products_interface";
 import formatPrice from "@/services/utils/helpers/formatPrice";
 import AddToCartBtn from "@/components/shared/product-card/AddToCartBtn";
 import FeatureCard from "@/components/shared/feature-card/FeatureCard";
@@ -10,6 +10,7 @@ import WishlistToggleBtn from "@/components/shared/product-card/WishlistToggleBt
 import { useState } from "react";
 import AppButton from "@/components/shared/app-button/AppButton";
 import AppInput from "@/components/shared/app-input/AppInput";
+import ProductReviews from "@/components/product-reviews/ProductReviews";
 
 const featuredCards = [
   {
@@ -35,9 +36,11 @@ const featuredCards = [
 export default function PageContent({
   productData,
   wishlistIds,
+  productReviews,
 }: {
   productData: ProductData;
   wishlistIds: string[];
+  productReviews: Review[];
 }) {
   const hasDiscount =
     productData.price > 0 &&
@@ -61,7 +64,7 @@ export default function PageContent({
     if (quantity > 0) {
       setQuantity(quantity);
     }
-    if(quantity > productData.quantity) {
+    if (quantity > productData.quantity) {
       setQuantity(productData.quantity);
     }
   }
@@ -224,6 +227,12 @@ export default function PageContent({
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          <ProductReviews
+            product={productData}
+            productReviews={productReviews}
+          />
         </div>
       </div>
     </div>

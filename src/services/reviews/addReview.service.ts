@@ -1,9 +1,22 @@
 import { BASE_URL } from "../config";
-import { http } from "../utils/http";
+import { ReviewResponse } from "../types/products_interface";
+import { getMyToken } from "../utils/helpers/getMyToken";
+import { httpClient, HttpResult } from "../utils/http";
 
-export const addReviewService = async (productId: string, payload: any): Promise<any> => {
-  return http(`${BASE_URL}/api/v1/products/${productId}/reviews`, {
-    method: "POST",
-    body: JSON.stringify(payload),
+export const ROUTE_URL = "/api/v1/products";
+
+export const addReviewService = async (
+  payload: {
+    rating: number;
+    review: string;
+  },
+  productId: string,
+): Promise<HttpResult<ReviewResponse>> => {
+  const decoded = await getMyToken();
+  const token = decoded?.realToken;
+
+  return httpClient.post(`${BASE_URL}${ROUTE_URL}/${productId}/reviews`, payload, {
+    requiredAuthToken: true,
+    token,  
   });
 };

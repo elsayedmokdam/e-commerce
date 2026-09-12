@@ -23,6 +23,17 @@ export default async function page({ params }: any) {
     );
   }
 
+  // Get product reviews
+  const reviewsResponse = await $SERVICE_REPOSITORY.Reviews.getProductReviews(
+    productData._id,
+  );
+
+  if (!reviewsResponse.ok) {
+    throw new Error(reviewsResponse.error.message);
+  }
+
+  const productReviews = reviewsResponse.data.data;
+
   return (
     <>
       {/* Header of the page */}
@@ -38,7 +49,7 @@ export default async function page({ params }: any) {
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />
       {/* Product Details */}
-      <PageContent productData={productData} wishlistIds={wishlistIds} />
+      <PageContent productData={productData} wishlistIds={wishlistIds} productReviews={productReviews} />
     </>
   );
 }

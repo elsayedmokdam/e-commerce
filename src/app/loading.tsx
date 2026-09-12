@@ -2,6 +2,7 @@
 
 import { Atom } from 'react-loading-indicators';
 
+
 export default function Loading() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-linear-to-br from-gray-50 to-gray-100">

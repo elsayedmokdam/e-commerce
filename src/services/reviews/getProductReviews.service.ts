@@ -1,9 +1,13 @@
 import { BASE_URL } from "../config";
-import { http } from "../utils/http";
+import { ReviewResponse } from "../types/products_interface";
+import { httpClient, HttpResult } from "../utils/http";
 
-export const getProductReviewsService = async (productId: string, params?: Record<string, string>): Promise<any> => {
+export const getProductReviewsService = async (
+  productId: string,
+  params?: Record<string, string>,
+): Promise<HttpResult<ReviewResponse>> => {
   const query = params ? `?${new URLSearchParams(params).toString()}` : "";
-  return http(`${BASE_URL}/api/v1/products/${productId}/reviews${query}`, {
-    method: "GET",
-  });
+  return httpClient.get(
+    `${BASE_URL}/api/v1/products/${productId}/reviews${query}`,
+  );
 };

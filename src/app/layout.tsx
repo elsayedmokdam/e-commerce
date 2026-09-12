@@ -11,6 +11,7 @@ import { CartResponse } from "@/services/types/cart_interface";
 import { GetWishlistResponse } from "@/services/types/wishlist_interface";
 import { getWishlistAction } from "@/services/actions/wishlist.action";
 import Providers from "./_providers/Providers";
+import { getMyToken } from "@/services/utils/helpers/getMyToken";
 
 const exo = Exo({
   variable: "--font-exo",

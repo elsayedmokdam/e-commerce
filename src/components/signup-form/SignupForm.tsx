@@ -17,6 +17,7 @@ import { SignupUserAction } from "../../services/actions/signup.action";
 import { useRouter } from "next/navigation";
 import { notify } from "@/services/utils/helpers/alerts";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 const fields: FormField[] = [
   {
@@ -153,13 +154,13 @@ export default function SignupForm() {
               />
               <span>
                 I agree to the{" "}
-                <span className="font-semibold text-main-color hover:text-green-700 hover:underline transition duration-200">
+                <Link href="/terms" className="font-semibold text-main-color hover:text-green-700 hover:underline transition duration-200">
                   Terms of Service
-                </span>{" "}
+                </Link>{" "}
                 and{" "}
-                <span className="font-semibold text-main-color hover:text-green-700 hover:underline transition duration-200">
+                <Link href="/privacy-policy" className="font-semibold text-main-color hover:text-green-700 hover:underline transition duration-200">
                   Privacy Policy
-                </span>
+                </Link>
               </span>
             </label>
           </div>

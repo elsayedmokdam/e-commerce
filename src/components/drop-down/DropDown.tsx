@@ -8,7 +8,7 @@ import {
 } from "../ui/dropdown-menu";
 import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
 import Link from "next/link";
-import { FaRegHeart, FaRegUser } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
 import { TiContacts } from "react-icons/ti";
 import { IoMdSettings } from "react-icons/io";
 import { signOut } from "next-auth/react";
@@ -44,11 +44,6 @@ const dropDownLinks = [
     href: "/wishlist",
     icon: <FaRegHeart />,
   },
-  // {
-  //   label: "Addresses",
-  //   href: "/addresses",
-  //   icon: <TiContacts />,
-  // },
 ];
 
 export default function DropDown({ data }: DropDownProps) {

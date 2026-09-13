@@ -57,6 +57,7 @@ export interface AppFormProps<T extends FieldValues = any> {
   submitButton?: boolean | ButtonConfig;
   resetButton?: boolean | ButtonConfig;
   actionButtons?: ActionButton[];
+  buttonClassName?: string;
 
   /** Validation schema */
   schema?: z.ZodSchema<any>;

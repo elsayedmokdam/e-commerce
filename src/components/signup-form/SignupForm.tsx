@@ -2,7 +2,6 @@
 import AppButton from "../shared/app-button/AppButton";
 import AppForm from "../shared/app-form/AppForm";
 import {
-  FaFacebookF,
   FaGithub,
   FaGoogle,
   FaLock,

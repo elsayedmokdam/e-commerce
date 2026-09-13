@@ -68,7 +68,7 @@ export default async function page({ params }: any) {
             href: `/categories/${subcategoryData._id}`,
           },
         ]}
-        subtitle="Explore our complete product collection"
+        subtitle={`Browse our ${subcategoryData.name} products`}
         iconBgColor="from-[#16A34A] to-[#4ADE80]"
       />
 
